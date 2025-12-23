@@ -201,14 +201,24 @@ n8n-mcp@2.28.7
 
 ### 実装担当
 - **Cursor**: ワークフロー作成・編集の実装ツール
+  - コード生成・編集
+  - リファクタリング
+  - バグ修正
+  - 新機能実装
 
 ### レビュー担当
-- **GitHub Copilot**: コードレビュー・品質保証
+- **GitHub Copilot Pro**: コードレビュー・品質保証
+  - コードレビュー
+  - プロジェクト全体分析
+  - アーキテクチャ設計提案
+  - Issue/PR管理
 
 ### ツール連携
 - **n8n-mcp**: GitHub ⇔ n8n Cloud同期ツール
   - 設定: `~/.cursor/mcp.json`
   - 参考: `.env.example`
+- **Cursor + GitHub Copilot連携**: 実装からレビューまで一貫したワークフロー
+  - 詳細: [Cursor + GitHub Copilot連携ガイド](./cursor-copilot-integration.md)
 
 ## 5. ワークフロー管理運用
 
