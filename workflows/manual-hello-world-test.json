@@ -7,10 +7,7 @@
       "name": "Manual Trigger",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
-      "position": [
-        250,
-        300
-      ]
+      "position": [250, 300]
     },
     {
       "parameters": {
@@ -30,10 +27,7 @@
       "name": "Set",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [
-        450,
-        300
-      ]
+      "position": [450, 300]
     }
   ],
   "connections": {
@@ -59,4 +53,3 @@
   "updatedAt": "2025-12-23T06:40:00.000Z",
   "versionId": "1"
 }
-
