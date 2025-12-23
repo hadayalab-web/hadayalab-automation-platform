@@ -4,11 +4,11 @@
 
 ## 📋 MCPサーバー一覧
 
-### 必須MCP（既存）
+### 設定済みMCPサーバー
 
-#### 1. n8n-mcp v2.30.2
+#### 1. n8n-mcp
 
-**状況**: ✅ 導入済み、JSONパースエラー解決済み
+**状況**: ✅ 導入済み、動作中
 
 **役割**: ワークフロー開発の中核
 
@@ -57,142 +57,6 @@
 
 ---
 
-### 新規導入推奨MCP
-
-#### 3. Vercel MCP Server
-
-**必須理由**: Vercel運用中
-
-**機能:**
-- プロジェクト管理（作成、削除、リスト）
-- デプロイメント管理（トリガー、ロールバック）
-- ログ分析
-- 環境変数設定
-- カスタムドメイン管理
-
-**設定方法:**
-
-1. **Vercel Access Token取得**
-   ```bash
-   # Vercel Dashboard → Settings → Tokens → Create Token
-   ```
-
-2. **MCP設定追加**
-   ```json
-   {
-     "vercel": {
-       "command": "npx",
-       "args": ["-y", "@modelcontextprotocol/server-vercel"],
-       "env": {
-         "VERCEL_ACCESS_TOKEN": "<YOUR_VERCEL_TOKEN>",
-         "LOG_LEVEL": "error",
-         "NODE_NO_WARNINGS": "1"
-       }
-     }
-   }
-   ```
-
-**n8nとの連携:**
-- Vercelデプロイメントをn8nワークフローで自動化
-- デプロイメント通知をSlack等に送信
-- 環境変数の一括管理
-
----
-
-#### 4. Google Workspace MCP Server
-
-**必須理由**: Google Workspaceを利用中
-
-**機能:**
-- Gmail自動化
-- Google Drive操作
-- Google Sheets連携
-- Google Calendar管理
-
-**設定方法:**
-
-1. **Google Cloud Console設定**
-   ```bash
-   # 1. Google Cloud Consoleでプロジェクト作成
-   # 2. Google Workspace APIを有効化
-   # 3. OAuth 2.0認証情報を作成
-   # 4. リダイレクトURIを設定
-   ```
-
-2. **認証情報取得**
-   ```bash
-   # Client ID, Client Secret, Refresh Tokenを取得
-   ```
-
-3. **MCP設定追加**
-   ```json
-   {
-     "google-workspace": {
-       "command": "npx",
-       "args": ["-y", "@modelcontextprotocol/server-google-workspace"],
-       "env": {
-         "GOOGLE_CLIENT_ID": "<YOUR_GOOGLE_CLIENT_ID>",
-         "GOOGLE_CLIENT_SECRET": "<YOUR_GOOGLE_CLIENT_SECRET>",
-         "GOOGLE_REFRESH_TOKEN": "<YOUR_GOOGLE_REFRESH_TOKEN>",
-         "LOG_LEVEL": "error",
-         "NODE_NO_WARNINGS": "1"
-       }
-     }
-   }
-   ```
-
-**n8nとの連携:**
-- Workspace APIをn8nワークフローで自動化
-- Gmail受信トリガーでワークフロー実行
-- Google Sheetsデータをn8nで処理
-- Calendarイベントをn8nで管理
-
----
-
-#### 5. PostgreSQL/Supabase MCP Server
-
-**必須理由**: データベース操作の効率化
-
-**機能:**
-- データベースクエリ実行
-- スキーマ管理
-- Supabase Vector Store
-- データ分析
-
-**設定方法:**
-
-1. **接続文字列取得**
-   ```bash
-   # PostgreSQLの場合
-   postgresql://user:password@host:port/database
-
-   # Supabaseの場合
-   postgresql://postgres:[YOUR-PASSWORD]@[PROJECT-REF].supabase.co:5432/postgres
-   ```
-
-2. **MCP設定追加**
-   ```json
-   {
-     "postgres": {
-       "command": "npx",
-       "args": ["-y", "@modelcontextprotocol/server-postgres"],
-       "env": {
-         "POSTGRES_CONNECTION_STRING": "<YOUR_CONNECTION_STRING>",
-         "LOG_LEVEL": "error",
-         "NODE_NO_WARNINGS": "1"
-       }
-     }
-   }
-   ```
-
-**n8nとの連携:**
-- データベース操作をn8nワークフローで自動化
-- データ同期・変換
-- レポート自動生成
-- データ分析の自動化
-
----
-
 ## 🔧 完全なmcp.json設定例
 
 ```json
@@ -207,170 +71,10 @@
         "LOG_LEVEL": "error",
         "NODE_NO_WARNINGS": "1"
       }
-    },
-    "vercel": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-vercel"],
-      "env": {
-        "VERCEL_ACCESS_TOKEN": "<YOUR_VERCEL_TOKEN>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "google-workspace": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-google-workspace"],
-      "env": {
-        "GOOGLE_CLIENT_ID": "<YOUR_GOOGLE_CLIENT_ID>",
-        "GOOGLE_CLIENT_SECRET": "<YOUR_GOOGLE_CLIENT_SECRET>",
-        "GOOGLE_REFRESH_TOKEN": "<YOUR_GOOGLE_REFRESH_TOKEN>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "postgres": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres"],
-      "env": {
-        "POSTGRES_CONNECTION_STRING": "<YOUR_POSTGRES_CONNECTION_STRING>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@context7/mcp-server"],
-      "env": {
-        "CONTEXT7_API_KEY": "<YOUR_CONTEXT7_KEY>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "stackoverflow": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-stackoverflow"],
-      "env": {
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "brave-search": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-      "env": {
-        "BRAVE_API_KEY": "<YOUR_BRAVE_KEY>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
     }
   }
 }
 ```
-
----
-
-### 6. Context7 MCP Server（技術ドキュメント）
-
-**必須理由**: Perplexity代替 - 最新技術ドキュメントへの常時アクセス
-
-**機能:**
-- 最新のコードドキュメントへの常時アクセス
-- リアルタイム技術情報取得
-- フレームワーク更新の自動追跡
-
-**設定方法:**
-
-1. **Context7 API Key取得**
-   ```bash
-   # Context7 Dashboard → API Keys → Create Key
-   ```
-
-2. **MCP設定追加**
-   ```json
-   {
-     "context7": {
-       "command": "npx",
-       "args": ["-y", "@context7/mcp-server"],
-       "env": {
-         "CONTEXT7_API_KEY": "<YOUR_CONTEXT7_KEY>",
-         "LOG_LEVEL": "error",
-         "NODE_NO_WARNINGS": "1"
-       }
-     }
-   }
-   ```
-
-**n8nとの連携:**
-- 技術ドキュメントをn8nワークフローで参照
-- 最新情報を自動取得してワークフロー更新
-
----
-
-### 7. Stack Overflow MCP Server（問題解決）
-
-**必須理由**: Perplexity代替 - エラー解決とベストプラクティス参照
-
-**機能:**
-- エラーメッセージの即座検索
-- コミュニティソリューション取得
-- ベストプラクティス参照
-
-**設定方法:**
-
-**MCP設定追加（API Key不要）**
-```json
-{
-  "stackoverflow": {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-stackoverflow"],
-    "env": {
-      "LOG_LEVEL": "error",
-      "NODE_NO_WARNINGS": "1"
-    }
-  }
-}
-```
-
-**n8nとの連携:**
-- エラー解決策をn8nワークフローで自動取得
-- ベストプラクティスをワークフローに反映
-
----
-
-### 8. Brave Search MCP Server（Web検索）
-
-**必須理由**: Perplexity代替 - リアルタイムWeb検索
-
-**機能:**
-- リアルタイムWeb検索
-- 最新技術情報取得
-- ドキュメント検索
-
-**設定方法:**
-
-1. **Brave Search API Key取得**
-   ```bash
-   # Brave Search API → Get API Key
-   ```
-
-2. **MCP設定追加**
-   ```json
-   {
-     "brave-search": {
-       "command": "npx",
-       "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-       "env": {
-         "BRAVE_API_KEY": "<YOUR_BRAVE_KEY>",
-         "LOG_LEVEL": "error",
-         "NODE_NO_WARNINGS": "1"
-       }
-     }
-   }
-   ```
-
-**n8nとの連携:**
-- Web検索結果をn8nワークフローで活用
-- 最新情報を自動取得して処理
 
 ---
 
@@ -378,15 +82,8 @@
 
 ### 1. 認証情報の準備
 
-各MCPサーバーに必要な認証情報を取得：
-
+必要な認証情報を取得：
 - **n8n**: API Key（既に取得済み）
-- **Vercel**: Access Token
-- **Google Workspace**: Client ID, Client Secret, Refresh Token
-- **PostgreSQL**: Connection String
-- **Context7**: API Key（Perplexity代替）
-- **Brave Search**: API Key（Perplexity代替）
-- **Stack Overflow**: API Key不要
 
 ### 2. mcp.jsonの更新
 
@@ -402,47 +99,30 @@
 
 ### 4. 動作確認
 
-各MCPサーバーの接続を確認：
+MCPサーバーの接続を確認：
 
 ```bash
 # Cursor AIチャットで実行
 @n8n 利用可能なツールを表示して
-@vercel プロジェクト一覧を表示して
-@google-workspace 利用可能なツールを表示して
-@postgres データベース一覧を表示して
-@context7 最新のNext.jsドキュメントを検索して
-@stackoverflow エラーメッセージを検索して
-@brave-search 最新技術情報を検索して
 ```
 
 ---
 
 ## 🔗 n8nとの統合
 
-すべてのMCPサーバーは、n8nワークフロー経由で統合管理されます：
+MCPサーバーは、n8nワークフロー経由で統合管理されます：
 
 ### 統合フロー
 
 ```
 Cursor AI
   ↓
-MCP Servers (n8n, Vercel, Google Workspace, PostgreSQL)
+n8n MCP Server
   ↓
 n8n Workflows
   ↓
 Automated Actions
 ```
-
-### 使用例
-
-1. **Vercelデプロイメント自動化**
-   - GitHub push → n8nワークフロー → Vercelデプロイ
-
-2. **Google Workspace連携**
-   - Gmail受信 → n8nワークフロー → Google Sheets更新
-
-3. **データベース操作**
-   - n8nワークフロー → PostgreSQLクエリ → レポート生成
 
 ---
 
@@ -456,9 +136,8 @@ Automated Actions
 
 ### パフォーマンス
 
-- **LOG_LEVEL**: すべてのMCPサーバーで`"error"`に設定
+- **LOG_LEVEL**: `"error"`に設定
 - **NODE_NO_WARNINGS**: `"1"`に設定して警告を抑制
-- **同時接続数**: 必要に応じて制限
 
 ### トラブルシューティング
 
@@ -469,17 +148,9 @@ Automated Actions
 ## 📚 参考リンク
 
 - [n8n-mcp Documentation](https://www.npmjs.com/package/n8n-mcp)
-- [Vercel MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-vercel)
-- [Google Workspace MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-google-workspace)
-- [PostgreSQL MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-postgres)
-- [Context7 MCP Server](https://www.npmjs.com/package/@context7/mcp-server)
-- [Stack Overflow MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-stackoverflow)
-- [Brave Search MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-brave-search)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
-- [Perplexity代替戦略](./perplexity-replacement-strategy.md)
 
 ---
 
 **最終更新**: 2025-12-23
-**バージョン**: 1.0.0
-
+**バージョン**: 2.0.0

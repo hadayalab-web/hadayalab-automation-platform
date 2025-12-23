@@ -56,71 +56,19 @@ Cursorチャット内で:
 → プロジェクトに適用したコード生成
 ```
 
-### 2. MCPサーバーで情報源を統合
+### 2. n8n MCP Serverで統合
 
-#### Context7 MCP Server（技術ドキュメント）
+**n8n-mcpの活用**
 
-**機能**
-- 最新のコードドキュメントへの常時アクセス
-- リアルタイム技術情報取得
-- フレームワーク更新の自動追跡
+現在設定済みのn8n MCP Serverにより、以下の機能が利用可能：
+- ワークフロー作成・管理
+- 543個のn8nノードによる各種サービス連携
+- 2,700+テンプレートからの検索
 
-**設定**
-```json
-{
-  "context7": {
-    "command": "npx",
-    "args": ["-y", "@context7/mcp-server"],
-    "env": {
-      "CONTEXT7_API_KEY": "<YOUR_CONTEXT7_KEY>",
-      "LOG_LEVEL": "error",
-      "NODE_NO_WARNINGS": "1"
-    }
-  }
-}
+**使用方法**
+
 ```
-
-#### Stack Overflow MCP Server（問題解決）
-
-**機能**
-- エラーメッセージの即座検索
-- コミュニティソリューション取得
-- ベストプラクティス参照
-
-**設定**
-```json
-{
-  "stackoverflow": {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-stackoverflow"],
-    "env": {
-      "LOG_LEVEL": "error",
-      "NODE_NO_WARNINGS": "1"
-    }
-  }
-}
-```
-
-#### Brave Search MCP Server（Web検索）
-
-**機能**
-- リアルタイムWeb検索
-- 最新技術情報取得
-- ドキュメント検索
-
-**設定**
-```json
-{
-  "brave-search": {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-    "env": {
-      "BRAVE_API_KEY": "<YOUR_BRAVE_KEY>",
-      "LOG_LEVEL": "error",
-      "NODE_NO_WARNINGS": "1"
-    }
-  }
-}
+Cursor Chat: @n8n 最新のn8nテンプレートを検索して
 ```
 
 ### 3. GitHub Copilot Workspace（プロジェクト理解）
@@ -213,7 +161,6 @@ Cursor Chatでエラーメッセージを選択
 ↓
 Cmd+L → 「このエラーを修正して」
 ↓
-→ Stack Overflow MCP検索
 → 原因特定
 → 自動修正
 → テスト実行
@@ -333,120 +280,6 @@ GitHub Copilot Pro: $10/月
 
 ---
 
-## 🗺️ 実装ロードマップ
-
-### Week 1: 基礎構築
-- ✅ Context7 MCP導入
-- ✅ Stack Overflow MCP導入
-- ✅ Brave Search MCP導入
-- ✅ Cursor Web検索機能有効化
-
-### Week 2: ワークフロー移行
-- □ Perplexity調査タスク → Cursor Agent化
-- □ ショートカット設定
-- □ チーム内トレーニング
-
-### Week 3: 最適化
-- □ モデル使い分けルール確立
-- □ GitHub Copilot Workspace活用
-- □ 効果測定・改善
-
----
-
-## 🔧 完全統合mcp.json設定
-
-```json
-{
-  "mcpServers": {
-    "n8n": {
-      "command": "npx",
-      "args": ["-y", "n8n-mcp"],
-      "env": {
-        "N8N_API_URL": "https://hadayalab.app.n8n.cloud",
-        "N8N_API_KEY": "<YOUR_N8N_API_KEY>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "vercel": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-vercel"],
-      "env": {
-        "VERCEL_ACCESS_TOKEN": "<YOUR_VERCEL_TOKEN>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "google-workspace": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-google-workspace"],
-      "env": {
-        "GOOGLE_CLIENT_ID": "<YOUR_GOOGLE_CLIENT_ID>",
-        "GOOGLE_CLIENT_SECRET": "<YOUR_GOOGLE_CLIENT_SECRET>",
-        "GOOGLE_REFRESH_TOKEN": "<YOUR_GOOGLE_REFRESH_TOKEN>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "postgres": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres"],
-      "env": {
-        "POSTGRES_CONNECTION_STRING": "<YOUR_POSTGRES_CONNECTION_STRING>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@context7/mcp-server"],
-      "env": {
-        "CONTEXT7_API_KEY": "<YOUR_CONTEXT7_KEY>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "stackoverflow": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-stackoverflow"],
-      "env": {
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    },
-    "brave-search": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-      "env": {
-        "BRAVE_API_KEY": "<YOUR_BRAVE_KEY>",
-        "LOG_LEVEL": "error",
-        "NODE_NO_WARNINGS": "1"
-      }
-    }
-  }
-}
-```
-
----
-
-## 📚 GitHub Copilot Chatの活用
-
-**GitHub.com上でリサーチ完結**
-
-```
-Copilot Chat起動
-
-「HadayaLab配下の全リポジトリを分析し、
-重複コードと共通化可能な部分を特定」
-
-→ 横断的分析
-→ リファクタリング提案
-→ Issue自動作成
-→ Copilot Agentに実装委託
-```
-
----
-
 ## ✅ 結論
 
 **Perplexityでの作業は100% Cursor/Copilotで代替可能**
@@ -463,17 +296,13 @@ Copilot Chat起動
 
 ---
 
-## 🔗 参考リンク
+## 📚 参考リンク
 
 - [Cursor MCP Servers](https://github.com/cursor/mcp-servers)
-- [Context7 MCP Server](https://www.npmjs.com/package/@context7/mcp-server)
-- [Stack Overflow MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-stackoverflow)
-- [Brave Search MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-brave-search)
+- [n8n-mcp Documentation](https://www.npmjs.com/package/n8n-mcp)
 - [GitHub Copilot Workspace](https://github.com/features/copilot)
 
 ---
 
 **最終更新**: 2025-12-23
-**バージョン**: 1.0.0
-
-
+**バージョン**: 2.0.0
