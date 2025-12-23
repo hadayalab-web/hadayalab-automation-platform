@@ -1,6 +1,6 @@
-# n8n-automation
+# hadayalab-automation-platform
 
-n8n Cloud ワークフロー自動化プロジェクト（SSOT）
+HadayaLab Automation Platform - MCP統合型ワークフロー自動化プラットフォーム（SSOT）
 
 ## 🎯 概要
 
@@ -21,7 +21,7 @@ n8n Cloud ワークフロー自動化プロジェクト（SSOT）
 
 ## 📚 ドキュメント
 
-- **[n8n-automation SSOT](./docs/n8n-automation-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
+- **[hadayalab-automation-platform SSOT](./docs/hadayalab-automation-platform-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
 - [n8n Cloud同期運用](./docs/n8n-cloud-sync.md)
 - [ワークフロー命名規約](./docs/workflow-conventions.md)
 - [ドキュメント一覧](./docs/README.md)
@@ -46,7 +46,7 @@ npm run format:check
 ## 📁 ディレクトリ構成
 
 ```
-n8n-automation/
+hadayalab-automation-platform/
 ├── workflows/ # n8nワークフローJSON（SSOT）
 ├── docs/ # 運用ドキュメント
 └── .github/workflows/ # CI/CD
@@ -76,6 +76,6 @@ n8n-automation/
 3. MCP サーバー再起動
 4. Cursor 再起動
 
-詳細は [docs/n8n-automation-SSOT.md](./docs/n8n-automation-SSOT.md) の「3. n8n-mcp の活用」を参照
+詳細は [docs/hadayalab-automation-platform-SSOT.md](./docs/hadayalab-automation-platform-SSOT.md) の「3. n8n-mcp の活用」を参照
 
 

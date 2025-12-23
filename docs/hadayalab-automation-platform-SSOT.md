@@ -1,23 +1,23 @@
-# n8n-automation SSOT（Single Source of Truth）
+# hadayalab-automation-platform SSOT（Single Source of Truth）
 
-このドキュメントは、n8n-automationプロジェクト全体の**唯一の信頼できる情報源**として機能します。
+このドキュメントは、hadayalab-automation-platformプロジェクト全体の**唯一の信頼できる情報源**として機能します。
 
 ## 1. プロジェクト概要
 
-- **プロジェクト名**: n8n-automation
-- **目的**: n8nワークフローの自動化と管理
-- **リポジトリ**: https://github.com/hadayalab-web/n8n-automation
+- **プロジェクト名**: hadayalab-automation-platform
+- **目的**: MCP統合型ワークフロー自動化プラットフォーム
+- **リポジトリ**: https://github.com/hadayalab-web/hadayalab-automation-platform
 - **実行環境**: n8n Cloud (https://hadayalab.app.n8n.cloud)
 
 ## 2. SSOT原則
 
 ### ドキュメント優先順位
 
-本書（n8n-automation-SSOT.md）がプロジェクト全体の最高位ドキュメントです。
+本書（hadayalab-automation-platform-SSOT.md）がプロジェクト全体の最高位ドキュメントです。
 
 矛盾がある場合の優先順位：
 
-1. **本書（n8n-automation-SSOT.md）** - プロジェクト全体方針
+1. **本書（hadayalab-automation-platform-SSOT.md）** - プロジェクト全体方針
 2. **n8n-cloud-sync.md** - 同期フロー詳細手順
 3. **workflow-conventions.md** - 命名規約・コーディング規約
 
@@ -316,7 +316,7 @@ n8n-mcp@2.28.7
 ### 主要ドキュメント
 
 - **README.md**: プロジェクト概要と運用方針
-- **docs/n8n-automation-SSOT.md**: プロジェクト全体SSOT（このファイル）
+- **docs/hadayalab-automation-platform-SSOT.md**: プロジェクト全体SSOT（このファイル）
 - **docs/n8n-cloud-sync.md**: GitHub⇔n8n Cloud同期詳細
 - **docs/workflow-conventions.md**: ワークフロー命名規約
 - **docs/README.md**: ドキュメント一覧
@@ -326,7 +326,7 @@ n8n-mcp@2.28.7
 | ドキュメント | 役割 |
 |------------|------|
 | README.md | プロジェクトの入り口、概要とクイックスタート |
-| n8n-automation-SSOT.md | プロジェクト全体の真実の唯一の情報源 |
+| hadayalab-automation-platform-SSOT.md | プロジェクト全体の真実の唯一の情報源 |
 | n8n-cloud-sync.md | 同期運用の詳細手順 |
 | workflow-conventions.md | 命名規約と構造ルール |
 

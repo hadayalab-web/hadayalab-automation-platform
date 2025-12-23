@@ -1,6 +1,6 @@
 # MCPサーバー導入ガイド
 
-このドキュメントは、n8n-automationプロジェクトで使用するMCP（Model Context Protocol）サーバーの設定方法を説明します。
+このドキュメントは、hadayalab-automation-platformプロジェクトで使用するMCP（Model Context Protocol）サーバーの設定方法を説明します。
 
 ## 📋 MCPサーバー一覧
 

@@ -1,11 +1,11 @@
-# n8n-automation Documentation
+# hadayalab-automation-platform Documentation
 
-このプロジェクトは n8n Cloud (https://hadayalab.app.n8n.cloud) の
+このプロジェクトは HadayaLab Automation Platform の
 ワークフローSSOT（Single Source of Truth）です。
 
 ## 📚 ドキュメント一覧
 
-- **[n8n-automation SSOT](./n8n-automation-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
+- **[hadayalab-automation-platform SSOT](./hadayalab-automation-platform-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
 - [Cursor + GitHub Copilot連携](./cursor-copilot-integration.md) - CursorとGitHub Copilot Proの効果的な連携方法
 - [n8n Cloud同期運用](./n8n-cloud-sync.md) - 運用フロー・セットアップ
 - [ワークフロー命名規約](./workflow-conventions.md) - 命名ルール・タグ運用
