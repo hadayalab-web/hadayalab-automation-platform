@@ -58,4 +58,24 @@ n8n-automation/
 - [n8n-mcp](https://www.npmjs.com/package/n8n-mcp)
 - [HadayaLab](https://github.com/hadayalab-web)
 
+## トラブルシューティング
+
+### MCP サーバー エラーハンドリング
+
+#### JSON パース エラー
+
+**症状：**
+```
+[error] Client error for command Unexpected token '',' in '"additi"...'
+```
+
+**対応：**
+
+1. n8n-mcp バージョン確認：`npm list n8n-mcp`
+2. v2.28.7 へアップグレード：`npm install n8n-mcp@2.28.7`
+3. MCP サーバー再起動
+4. Cursor 再起動
+
+詳細は [docs/n8n-automation-SSOT.md](./docs/n8n-automation-SSOT.md) の「3. n8n-mcp の活用」を参照
+
 
