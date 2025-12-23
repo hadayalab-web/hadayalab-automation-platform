@@ -54,7 +54,7 @@
     "executionOrder": "v1"
   },
   "staticData": null,
-  "tags": ["test", "mcp"],
+  "tags": ["test", "mcp", "validated"],
   "triggerCount": 0,
   "updatedAt": "2025-12-23T06:40:00.000Z",
   "versionId": "1"
