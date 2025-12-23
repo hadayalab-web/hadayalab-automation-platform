@@ -20,9 +20,12 @@
 ## 標準フロー（GitHub→Cloud）
 
 1. Cursorでワークフロー編集
-2. ローカル検証（`npm run format:check`）
+2. ローカル検証
+   - `npm run format`（自動整形）
+   - `npm run format:check`（確認）
 3. GitHubへpush
 4. GitHub Actions自動検証
+   - ※push後、GitHub Actionsが自動実行されgreenになることを確認してから次のステップへ（推奨）
 5. n8n-mcp経由でCloud反映
 6. Cloud UIで動作確認
 
@@ -42,6 +45,17 @@
 - **同じワークフローをCloudとGitHub両方で同時編集禁止**
 - **UI編集後は必ず取り込みコミット作成**
 - **Credentials/Secretsは環境依存（JSON非含有）**
+
+#### Import/Deployの違い
+
+- n8n Cloud UIでの「Import」は上書き（デプロイ）
+- Cloud変更のGitHub反映は必ずExport→取り込み手順を実施
+
+#### Export JSONの特性
+
+- Export時にメタデータ（updatedAt等）含有
+- 差分が荒れるのは仕様
+- Prettierで整形されるが、重要な変更のみに注目
 
 ## なぜGitHub Actionsが必要か
 
