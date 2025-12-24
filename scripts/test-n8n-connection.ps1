@@ -47,7 +47,7 @@ try {
         "X-N8N-API-KEY" = $n8nApiKey
         "Content-Type" = "application/json"
     }
-    
+
     $response = Invoke-RestMethod -Uri "$n8nApiBaseUrl/workflows" -Method Get -Headers $headers -ErrorAction Stop
     Write-Host "✓ 接続成功！" -ForegroundColor Green
     Write-Host "  ワークフロー数: $($response.data.Count)" -ForegroundColor Cyan
@@ -76,7 +76,7 @@ try {
         "X-N8N-API-KEY" = $n8nApiKey
         "Content-Type" = "application/json"
     }
-    
+
     $response = Invoke-RestMethod -Uri "$n8nApiBaseUrl/instance" -Method Get -Headers $headers -ErrorAction Stop
     Write-Host "✓ インスタンス情報取得成功！" -ForegroundColor Green
     Write-Host "  インスタンス名: $($response.data.instanceName)" -ForegroundColor Cyan
