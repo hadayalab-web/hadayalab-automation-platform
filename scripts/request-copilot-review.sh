@@ -44,3 +44,4 @@ echo "$REVIEW_MESSAGE" | cursor agent
 echo ""
 echo "レビュー依頼が送信されました。"
 
+

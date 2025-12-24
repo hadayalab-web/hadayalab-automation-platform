@@ -13,6 +13,9 @@ lerna-debug.log*
 .env.test.local
 .env.production.local
 
+# Infisical
+.infisical.json
+
 # n8n関連
 .n8n/
 n8n-data/

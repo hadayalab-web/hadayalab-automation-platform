@@ -12,10 +12,15 @@
 - [n8n Cloud同期運用](./n8n-cloud-sync.md) - 運用フロー・セットアップ
 - [ワークフロー命名規約](./workflow-conventions.md) - 命名ルール・タグ運用
 - [MCPサーバー設定](./mcp-servers-setup.md) - MCPサーバー導入ガイド（n8n）
+- [API Keys設定](./api-keys-setup.md) - APIキーの取得・設定方法
+- [Infisical設定](./infisical-setup.md) - Infisicalでのシークレット一元管理（**推奨**）
+- [Infisical クイックスタート](./infisical-quick-start.md) - Infisicalアカウント作成後の初期設定（**今すぐ実行**）
+- [GitHub Secrets設定](./github-secrets-setup.md) - GitHub Secretsでのキー管理（CI/CD用）
 - [Perplexity代替戦略](./perplexity-replacement-strategy.md) - PerplexityをCursor/Copilotで完全代替
 - [MCPトラブルシューティング](./mcp-troubleshooting.md) - MCP設定エラーの診断と修正
 - [Copilot Agent ワークフロー](./COPILOT_AGENT_WORKFLOW.md) - GitHub Copilot Agentレビュー依頼の効率的な方法（**重要: CLI経由では自動起動しません**）
 - [Copilot Agent レビュー依頼実践ガイド](./HOW_TO_REQUEST_COPILOT_REVIEW.md) - **実際に使用しているPR経由のレビュー依頼方法**（推奨）
+- [CryptoQuant API リファレンス](./cryptoquant-reference.md) - CryptoQuant APIドキュメントとカタログへのクイックアクセス
 
 ---
 

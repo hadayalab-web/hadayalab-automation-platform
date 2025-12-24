@@ -14,6 +14,8 @@
 **✅ 正しい方法:**
 - `.env.example`をテンプレートとして使用
 - 実際のAPIキーは`mcp.json`に直接設定（ローカルのみ）
+- **Infisicalで一元管理**（推奨） - [Infisical設定ガイド](./infisical-setup.md) を参照
+- **GitHub Secretsで管理**（CI/CD用） - [GitHub Secrets設定ガイド](./github-secrets-setup.md) を参照
 - 環境変数として管理
 
 ---
@@ -65,6 +67,35 @@
 
 ---
 
+## 🔗 シークレット管理方法の選択
+
+### Infisical（推奨）
+
+**Infisical**を使用することで、ローカル開発、CI/CD、本番環境など、すべての環境でシークレットを一元管理できます。
+
+**メリット:**
+- ✅ 一元管理（ローカル開発、CI/CD、本番環境）
+- ✅ 動的シークレットとローテーション
+- ✅ 高度なアクセス制御（RBAC）
+- ✅ 監査ログ
+
+詳細は [Infisical設定ガイド](./infisical-setup.md) を参照してください。
+
+### GitHub Secrets
+
+CI/CDやGitHub ActionsでAPIキーを使用する場合は、**GitHub Secrets**も使用できます。
+
+詳細は [GitHub Secrets設定ガイド](./github-secrets-setup.md) を参照してください。
+
+### ローカル開発 vs CI/CD
+
+- **ローカル開発（Cursor）**:
+  - `mcp.json`に直接設定（簡易）
+  - または Infisicalから読み込み（推奨）
+- **CI/CD（GitHub Actions）**:
+  - Infisicalを使用（推奨）
+  - または GitHub Secretsを使用
+
 ## 📝 注意事項
 
 現在、プロジェクトでは**n8n API Keyのみ**が必要です。
@@ -73,5 +104,5 @@
 
 ---
 
-**最終更新**: 2025-12-23
-**バージョン**: 2.0.0
+**最終更新**: 2025-01-23
+**バージョン**: 2.1.0
