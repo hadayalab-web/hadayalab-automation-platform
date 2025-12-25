@@ -38,7 +38,7 @@ try {
     }
     $n8nApiKeyObj = $jsonText | ConvertFrom-Json
     $n8nApiKey = $n8nApiKeyObj[0].secretValue
-    
+
     if ([string]::IsNullOrEmpty($n8nApiKey)) {
         Write-Host "ERROR: Failed to get N8N_API_KEY" -ForegroundColor Red
         Write-Host ""
@@ -47,7 +47,7 @@ try {
         Write-Host "2. Save API Key to Infisical (N8N_API_KEY)" -ForegroundColor Cyan
         exit 1
     }
-    
+
     Write-Host "Got N8N_API_KEY (length: $($n8nApiKey.Length))" -ForegroundColor Green
 } catch {
     Write-Host "ERROR: Failed to get N8N_API_KEY" -ForegroundColor Red

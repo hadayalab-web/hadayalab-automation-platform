@@ -5,6 +5,7 @@
 ## 📚 ドキュメント一覧
 
 - **[hadayalab-automation-platform SSOT](./hadayalab-automation-platform-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
+- **[n8n MCP機能比較 SSOT](./n8n-mcp-capabilities-comparison-SSOT.md)** - n8nネイティブMCPとn8n-mcpパッケージの機能と制限の完全ガイド（**MCP機能確認時に参照**）
 - [GitHub Copilot Proセットアップ](./github-copilot-setup.md) - GitHub Copilot Proのセットアップと動作確認（**GitHub Copilot連携開始時に参照**）
 - [GitHub Copilot 最初のタスク](./github-copilot-first-task.md) - GitHub Copilot活用の第一歩（**今すぐ実行**）
 - [GitHub Copilot タスク一覧](./github-copilot-tasks.md) - GitHub Copilotに任せられる具体的なタスクリスト
@@ -20,6 +21,7 @@
 - [MCPトラブルシューティング](./mcp-troubleshooting.md) - MCP設定エラーの診断と修正
 - [Copilot Agent ワークフロー](./COPILOT_AGENT_WORKFLOW.md) - GitHub Copilot Agentレビュー依頼の効率的な方法（**重要: CLI経由では自動起動しません**）
 - [Copilot Agent レビュー依頼実践ガイド](./HOW_TO_REQUEST_COPILOT_REVIEW.md) - **実際に使用しているPR経由のレビュー依頼方法**（推奨）
+- **[GitHub Copilot Agents AI補助ワークフロー SSOT](./github-copilot-ai-assistant-workflow-SSOT.md)** - Cursor UIから完全制御できるAI補助システム（**Cursor Chatから指示するだけでGitHub Copilot Agentsが自動動作**）
 - [CryptoQuant API リファレンス](./cryptoquant-reference.md) - CryptoQuant APIドキュメントとカタログへのクイックアクセス
 
 ---

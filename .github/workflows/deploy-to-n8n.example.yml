@@ -1,0 +1,101 @@
+# n8n Cloudへの自動デプロイワークフロー（サンプル）
+#
+# このワークフローは、GitHub Secretsを使用してn8n Cloudにワークフローをデプロイする例です。
+# 実際に使用する場合は、このファイルをコピーして適切な名前（例: deploy-to-n8n.yml）にリネームしてください。
+#
+# 前提条件:
+# 1. GitHub Secretsに以下が設定されていること:
+#    - N8N_API_KEY: n8n Cloud APIキー
+#    - N8N_API_URL: n8n CloudインスタンスのURL（例: https://hadayalab.app.n8n.cloud）
+#
+# 設定方法: docs/github-secrets-setup.md を参照
+
+name: Deploy to n8n Cloud
+
+on:
+  # 手動実行
+  workflow_dispatch:
+    inputs:
+      workflow_file:
+        description: 'デプロイするワークフローファイル（workflows/からの相対パス）'
+        required: true
+        type: string
+        default: 'manual-hello-world-test.json'
+
+  # または、特定のブランチへのpush時に自動実行
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'workflows/**/*.json'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Format workflow JSON
+        run: npm run format
+
+      - name: Validate workflow JSON
+        run: npm run format:check
+
+      - name: Deploy workflow to n8n Cloud
+        env:
+          N8N_API_URL: ${{ secrets.N8N_API_URL }}
+          N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
+        run: |
+          # ワークフローファイルのパスを設定
+          WORKFLOW_FILE="workflows/${{ github.event.inputs.workflow_file }}"
+
+          # ファイルの存在確認
+          if [ ! -f "$WORKFLOW_FILE" ]; then
+            echo "Error: Workflow file not found: $WORKFLOW_FILE"
+            exit 1
+          fi
+
+          # ワークフローJSONを読み込む
+          WORKFLOW_JSON=$(cat "$WORKFLOW_FILE")
+
+          # n8n APIを使用してワークフローをインポート
+          # 注意: この例は基本的な実装です。実際のn8n APIの仕様に合わせて調整してください
+          echo "Deploying workflow: $WORKFLOW_FILE"
+
+          # n8n APIへのリクエスト例（実際のAPIエンドポイントに合わせて調整が必要）
+          # curl -X POST "$N8N_API_URL/api/v1/workflows" \
+          #   -H "X-N8N-API-KEY: $N8N_API_KEY" \
+          #   -H "Content-Type: application/json" \
+          #   -d "$WORKFLOW_JSON"
+
+          echo "✅ Workflow deployment completed (example - actual API call needs to be implemented)"
+
+      - name: Verify deployment
+        env:
+          N8N_API_URL: ${{ secrets.N8N_API_URL }}
+          N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
+        run: |
+          echo "Verifying deployment..."
+          # 実際の検証ロジックを実装
+          # 例: ワークフローが正しくデプロイされたか確認
+
+
+
+
+
+
+
+
+
+
+
+

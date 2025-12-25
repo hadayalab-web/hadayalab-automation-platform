@@ -1,0 +1,213 @@
+name: Execute n8n Workflow (via Copilot)
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, synchronize]
+  workflow_dispatch:
+    inputs:
+      workflow_name:
+        description: 'n8nワークフロー名'
+        required: true
+      workflow_params:
+        description: 'n8nワークフローパラメータ（JSON形式）'
+        required: false
+
+jobs:
+  execute-n8n-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if Copilot triggered
+        id: check-copilot
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = context.payload.comment?.body || '';
+            const isCopilot = comment.includes('@copilot') ||
+                            context.actor === 'github-actions[bot]';
+            const hasN8nCommand = comment.includes('n8n') ||
+                                 comment.includes('ワークフロー実行') ||
+                                 comment.includes('n8n workflow');
+
+            core.setOutput('isCopilot', isCopilot);
+            core.setOutput('hasN8nCommand', hasN8nCommand);
+
+            return { isCopilot, hasN8nCommand };
+
+      - name: Parse n8n workflow command
+        id: parse-command
+        if: steps.check-copilot.outputs.isCopilot == 'true' && steps.check-copilot.outputs.hasN8nCommand == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = context.payload.comment?.body || '';
+
+            // n8nワークフロー名を抽出
+            const workflowMatch = comment.match(/ワークフロー名[：:]\s*(\w+)/) ||
+                                 comment.match(/workflow[：:]\s*(\w+)/i) ||
+                                 comment.match(/n8nワークフロー[：:]\s*(\w+)/);
+
+            // パラメータを抽出（JSON形式）
+            const paramsMatch = comment.match(/パラメータ[：:]\s*({[^}]+})/s) ||
+                               comment.match(/params[：:]\s*({[^}]+})/is) ||
+                               comment.match(/```json\s*({[^}]+})\s*```/s);
+
+            const workflowName = workflowMatch ? workflowMatch[1] :
+                                github.event.inputs?.workflow_name || 'default';
+
+            let params = {};
+            if (paramsMatch) {
+              try {
+                params = JSON.parse(paramsMatch[1]);
+              } catch (e) {
+                // JSON形式でない場合、キー=値形式をパース
+                const keyValueMatch = comment.match(/パラメータ[：:]\s*([^\n]+)/);
+                if (keyValueMatch) {
+                  const pairs = keyValueMatch[1].split(',').map(p => p.trim());
+                  pairs.forEach(pair => {
+                    const [key, value] = pair.split('=').map(s => s.trim());
+                    if (key && value) {
+                      params[key] = value;
+                    }
+                  });
+                }
+              }
+            } else if (github.event.inputs?.workflow_params) {
+              try {
+                params = JSON.parse(github.event.inputs.workflow_params);
+              } catch (e) {
+                params = {};
+              }
+            }
+
+            core.setOutput('workflowName', workflowName);
+            core.setOutput('params', JSON.stringify(params));
+
+            return { workflowName, params };
+
+      - name: Execute n8n workflow
+        id: execute-n8n
+        if: steps.check-copilot.outputs.isCopilot == 'true' && steps.check-copilot.outputs.hasN8nCommand == 'true'
+        env:
+          N8N_API_URL: ${{ secrets.N8N_API_URL }}
+          N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
+        run: |
+          WORKFLOW_NAME="${{ steps.parse-command.outputs.workflowName }}"
+          WORKFLOW_PARAMS="${{ steps.parse-command.outputs.params }}"
+
+          echo "Executing n8n workflow: $WORKFLOW_NAME"
+          echo "Parameters: $WORKFLOW_PARAMS"
+
+          # n8nワークフローIDを取得
+          WORKFLOW_RESPONSE=$(curl -s -X GET \
+            "$N8N_API_URL/api/v1/workflows" \
+            -H "X-N8N-API-KEY: $N8N_API_KEY" \
+            -H "Accept: application/json")
+
+          WORKFLOW_ID=$(echo "$WORKFLOW_RESPONSE" | jq -r ".data[] | select(.name == \"$WORKFLOW_NAME\") | .id")
+
+          if [ -z "$WORKFLOW_ID" ] || [ "$WORKFLOW_ID" == "null" ]; then
+            echo "Error: Workflow '$WORKFLOW_NAME' not found"
+            exit 1
+          fi
+
+          echo "Found workflow ID: $WORKFLOW_ID"
+
+          # n8nワークフローを実行
+          EXECUTION_RESPONSE=$(curl -s -X POST \
+            "$N8N_API_URL/api/v1/workflows/$WORKFLOW_ID/execute" \
+            -H "X-N8N-API-KEY: $N8N_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$WORKFLOW_PARAMS")
+
+          EXECUTION_ID=$(echo "$EXECUTION_RESPONSE" | jq -r ".data.executionId // .executionId // empty")
+
+          if [ -z "$EXECUTION_ID" ] || [ "$EXECUTION_ID" == "null" ]; then
+            echo "Error: Failed to execute workflow"
+            echo "Response: $EXECUTION_RESPONSE"
+            exit 1
+          fi
+
+          echo "executionId=$EXECUTION_ID" >> $GITHUB_OUTPUT
+
+          # 実行結果を待機（最大60秒）
+          MAX_WAIT=60
+          WAIT_TIME=0
+          while [ $WAIT_TIME -lt $MAX_WAIT ]; do
+            sleep 5
+            WAIT_TIME=$((WAIT_TIME + 5))
+
+            EXECUTION_STATUS=$(curl -s -X GET \
+              "$N8N_API_URL/api/v1/executions/$EXECUTION_ID" \
+              -H "X-N8N-API-KEY: $N8N_API_KEY" \
+              | jq -r ".data.finished // false")
+
+            if [ "$EXECUTION_STATUS" == "true" ]; then
+              break
+            fi
+          done
+
+          # 実行結果を取得
+          EXECUTION_RESULT=$(curl -s -X GET \
+            "$N8N_API_URL/api/v1/executions/$EXECUTION_ID" \
+            -H "X-N8N-API-KEY: $N8N_API_KEY")
+
+          echo "result<<EOF" >> $GITHUB_OUTPUT
+          echo "$EXECUTION_RESULT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Report result to Copilot
+        if: steps.check-copilot.outputs.isCopilot == 'true' && steps.check-copilot.outputs.hasN8nCommand == 'true'
+        uses: actions/github-script@v7
+        env:
+          EXECUTION_ID: ${{ steps.execute-n8n.outputs.executionId }}
+          EXECUTION_RESULT: ${{ steps.execute-n8n.outputs.result }}
+        with:
+          script: |
+            const executionId = process.env.EXECUTION_ID;
+            const resultJson = process.env.EXECUTION_RESULT;
+
+            let result;
+            try {
+              result = JSON.parse(resultJson);
+            } catch (e) {
+              result = { error: 'Failed to parse result', raw: resultJson };
+            }
+
+            const workflowName = '${{ steps.parse-command.outputs.workflowName }}';
+            const status = result.data?.finished ? '✅ 成功' : '⏳ 実行中';
+            const finishedAt = result.data?.stoppedAt || '実行中...';
+
+            let resultData = '';
+            if (result.data?.data) {
+              try {
+                resultData = `\n\n**実行結果データ**:\n\`\`\`json\n${JSON.stringify(result.data.data, null, 2)}\n\`\`\``;
+              } catch (e) {
+                resultData = `\n\n**実行結果**: ${JSON.stringify(result.data.data)}`;
+              }
+            }
+
+            const comment = `## ✅ n8nワークフロー実行完了
+
+**ワークフロー名**: \`${workflowName}\`
+**実行ID**: \`${executionId}\`
+**ステータス**: ${status}
+**完了時刻**: ${finishedAt}${resultData}
+
+**詳細**: [n8n Dashboard](${process.env.N8N_API_URL}/executions/${executionId})`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+
+
+
+

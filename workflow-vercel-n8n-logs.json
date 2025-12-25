@@ -1,0 +1,285 @@
+{
+  "name": "Vercel & n8n Logs Access",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "get-logs",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [250, 300],
+      "webhookId": "get-logs"
+    },
+    {
+      "parameters": {
+        "jsCode": "// リクエストデータを解析\nconst body = $input.item.json.body || {};\n\n// デプロイメントIDまたはプロジェクトIDを取得\nconst deploymentId = body.deploymentId || body.deployment_id;\nconst projectId = body.projectId || body.project_id;\nconst limit = body.limit || 10;\n\nreturn [{\n  json: {\n    deploymentId,\n    projectId,\n    limit,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "parse-request",
+      "name": "Parse Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.vercel.com/v2/deployments/{{ $json.deploymentId }}/events",
+        "authentication": "genericCredentialType",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.VERCEL_API_TOKEN }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "get-vercel-logs",
+      "name": "Get Vercel Logs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [650, 200]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.vercel.com/v13/deployments?projectId={{ $json.projectId }}&limit={{ $json.limit }}",
+        "authentication": "genericCredentialType",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.VERCEL_API_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-vercel-deployments",
+      "name": "Get Vercel Deployments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [650, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Vercelログを整形\nconst logs = $input.item.json;\n\n// エラーログをフィルタリング\nconst errorLogs = [];\nconst allLogs = Array.isArray(logs) ? logs : (logs.events || logs.data || []);\n\nfor (const log of allLogs) {\n  const level = log.level || log.type || '';\n  const message = log.message || log.text || JSON.stringify(log);\n  \n  if (level.toLowerCase().includes('error') || \n      message.toLowerCase().includes('error') ||\n      message.toLowerCase().includes('failed') ||\n      message.toLowerCase().includes('exception')) {\n    errorLogs.push({\n      timestamp: log.timestamp || log.created || new Date().toISOString(),\n      level: level,\n      message: message,\n      source: log.source || 'unknown',\n      raw: log\n    });\n  }\n}\n\nreturn [{\n  json: {\n    totalLogs: allLogs.length,\n    errorLogs: errorLogs.length,\n    errors: errorLogs,\n    allLogs: allLogs.slice(0, 50),\n    deploymentId: $('Parse Request').item.json.deploymentId\n  }\n}];"
+      },
+      "id": "parse-vercel-logs",
+      "name": "Parse Vercel Logs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n実行履歴を取得するためのデータを準備\n// 注意: n8n REST APIを使用する場合はPersonal Access Tokenが必要\n\nconst requestData = $('Parse Request').item.json;\n\nreturn [{\n  json: {\n    workflowId: requestData.workflowId || 'EE7Thl6p9Zsmfns4',\n    limit: requestData.limit || 10,\n    status: 'error', // エラーのみ取得\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "prepare-n8n-query",
+      "name": "Prepare n8n Query",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 400]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://hadayalab.app.n8n.cloud/rest/executions?workflowId={{ $json.workflowId }}&limit={{ $json.limit }}",
+        "authentication": "genericCredentialType",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-N8N-API-KEY",
+              "value": "={{ $env.N8N_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "get-n8n-executions",
+      "name": "Get n8n Executions",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [1050, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n実行履歴からエラーを抽出\nconst executions = $input.item.json;\n\nconst executionList = Array.isArray(executions) ? executions : (executions.data || []);\nconst errorExecutions = [];\n\nfor (const exec of executionList) {\n  if (exec.data && exec.data.resultData) {\n    const resultData = exec.data.resultData;\n    \n    // ワークフローレベルのエラー\n    if (resultData.error) {\n      errorExecutions.push({\n        id: exec.id,\n        workflowId: exec.workflowId,\n        startedAt: exec.startedAt,\n        stoppedAt: exec.stoppedAt,\n        mode: exec.mode,\n        error: {\n          message: resultData.error.message,\n          stack: resultData.error.stack\n        }\n      });\n    }\n    \n    // ノードレベルのエラー\n    if (resultData.runData) {\n      for (const [nodeName, nodeRuns] of Object.entries(resultData.runData)) {\n        if (nodeRuns && nodeRuns.length > 0) {\n          const lastRun = nodeRuns[nodeRuns.length - 1];\n          if (lastRun.error) {\n            errorExecutions.push({\n              id: exec.id,\n              workflowId: exec.workflowId,\n              nodeName: nodeName,\n              startedAt: exec.startedAt,\n              error: {\n                message: lastRun.error.message,\n                stack: lastRun.error.stack\n              }\n            });\n          }\n        }\n      }\n    }\n  }\n}\n\nreturn [{\n  json: {\n    totalExecutions: executionList.length,\n    errorExecutions: errorExecutions.length,\n    errors: errorExecutions,\n    allExecutions: executionList.slice(0, 10)\n  }\n}];"
+      },
+      "id": "parse-n8n-executions",
+      "name": "Parse n8n Executions",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Vercelとn8nのログを統合\nconst vercelLogs = $('Parse Vercel Logs').item.json;\nconst n8nExecutions = $('Parse n8n Executions').item.json;\n\nreturn [{\n  json: {\n    timestamp: new Date().toISOString(),\n    vercel: {\n      totalLogs: vercelLogs.totalLogs || 0,\n      errorLogs: vercelLogs.errorLogs || 0,\n      errors: vercelLogs.errors || []\n    },\n    n8n: {\n      totalExecutions: n8nExecutions.totalExecutions || 0,\n      errorExecutions: n8nExecutions.errorExecutions || 0,\n      errors: n8nExecutions.errors || []\n    },\n    summary: {\n      totalErrors: (vercelLogs.errorLogs || 0) + (n8nExecutions.errorExecutions || 0),\n      hasVercelErrors: (vercelLogs.errorLogs || 0) > 0,\n      hasN8nErrors: (n8nExecutions.errorExecutions || 0) > 0\n    }\n  }\n}];"
+      },
+      "id": "combine-logs",
+      "name": "Combine Logs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1450, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "respond-to-webhook",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1650, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Parse Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Request": {
+      "main": [
+        [
+          {
+            "node": "Get Vercel Logs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Vercel Deployments",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Prepare n8n Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Vercel Logs": {
+      "main": [
+        [
+          {
+            "node": "Parse Vercel Logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Vercel Deployments": {
+      "main": [
+        [
+          {
+            "node": "Parse Vercel Logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Vercel Logs": {
+      "main": [
+        [
+          {
+            "node": "Combine Logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare n8n Query": {
+      "main": [
+        [
+          {
+            "node": "Get n8n Executions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get n8n Executions": {
+      "main": [
+        [
+          {
+            "node": "Parse n8n Executions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse n8n Executions": {
+      "main": [
+        [
+          {
+            "node": "Combine Logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Logs": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-01-24T00:00:00.000Z",
+  "versionId": "1"
+}
+
+
+
+
+
+

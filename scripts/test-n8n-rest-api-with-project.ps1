@@ -21,7 +21,7 @@ try {
     $personalAccessTokenJson = infisical secrets get N8N_PERSONAL_ACCESS_TOKEN --token $token --projectId $projectId --output json 2>&1 | Out-String
     $personalAccessTokenObj = $personalAccessTokenJson | ConvertFrom-Json
     $personalAccessToken = $personalAccessTokenObj[0].secretValue
-    
+
     if ([string]::IsNullOrEmpty($personalAccessToken)) {
         Write-Host "エラー: Personal Access Tokenが取得できませんでした" -ForegroundColor Red
         Write-Host ""
@@ -30,7 +30,7 @@ try {
         Write-Host "2. トークンを作成してInfisicalに保存 (N8N_PERSONAL_ACCESS_TOKEN)" -ForegroundColor Cyan
         exit 1
     }
-    
+
     Write-Host "✓ Personal Access Tokenを取得しました" -ForegroundColor Green
     Write-Host ""
 } catch {
@@ -122,4 +122,14 @@ try {
 }
 
 Write-Host "=== テスト完了 ===" -ForegroundColor Green
+
+
+
+
+
+
+
+
+
+
 

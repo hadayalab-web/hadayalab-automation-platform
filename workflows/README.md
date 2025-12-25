@@ -32,6 +32,29 @@
 
   **注意**: ファイルがGitHubにプッシュされていない場合、URLからのインポートは404エラーになります。その場合は方法1を使用してください。
 
+### @github-copilot-ai-review-assistant
+- **ファイル**: `workflows/github-copilot-ai-review-assistant.json`
+- **説明**: GitHub Copilot Agents AI補助レビューワークフロー
+- **機能**:
+  - Cursor Chatから指示を受けて、GitHub Copilot Agentsに自動レビュー依頼
+  - Issueを作成し、`@copilot`メンション付きレビュー依頼を自動送信
+  - Copilotの応答を監視し、結果をCursor Chatに返す
+- **タグ**: github, copilot, ai-assistant, automation, review
+- **参照方法**: `@workflows/github-copilot-ai-review-assistant.json` または `@github-copilot-ai-review-assistant`
+- **必要な環境変数**:
+  - `GITHUB_PERSONAL_ACCESS_TOKEN`: GitHub API認証用のPersonal Access Token
+- **Cursor Chatでの使用方法**:
+  ```
+  @n8n-cloud github-copilot-ai-review-assistantワークフローを実行して、file=src/main.ts, focus=security,performance
+  ```
+- **n8n Cloudへのインポート**:
+  1. このファイルをGitHubにコミット・プッシュしてください
+  2. n8n Dashboardで「Import Workflow from URL」を開き、以下のURLを入力してください：
+     ```
+     https://raw.githubusercontent.com/hadayalab-web/hadayalab-automation-platform/main/workflows/github-copilot-ai-review-assistant.json
+     ```
+  3. 環境変数`GITHUB_PERSONAL_ACCESS_TOKEN`をn8n Cloudに設定してください
+
 ### @manual-hello-world-test
 - **ファイル**: `workflows/manual-hello-world-test.json`
 - **説明**: MCPテスト用ワークフロー

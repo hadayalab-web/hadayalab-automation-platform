@@ -21,12 +21,12 @@ try {
     $personalAccessTokenJson = infisical secrets get N8N_PERSONAL_ACCESS_TOKEN --token $token --projectId $projectId --output json 2>&1 | Out-String
     $personalAccessTokenObj = $personalAccessTokenJson | ConvertFrom-Json
     $personalAccessToken = $personalAccessTokenObj[0].secretValue
-    
+
     if ([string]::IsNullOrEmpty($personalAccessToken)) {
         Write-Host "エラー: Personal Access Tokenが取得できませんでした" -ForegroundColor Red
         exit 1
     }
-    
+
     Write-Host "✓ Personal Access Tokenを取得しました" -ForegroundColor Green
     Write-Host ""
 } catch {
@@ -65,12 +65,12 @@ Write-Host "ワークフローをn8nにインポート中..." -ForegroundColor Y
 try {
     $body = $workflowJson | ConvertTo-Json -Depth 100
     $uri = "$baseUrl/workflows"
-    
+
     Write-Host "  URL: $uri" -ForegroundColor Gray
     Write-Host "  ワークフロー名: $($workflowJson.name)" -ForegroundColor Gray
-    
+
     $response = Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body -ErrorAction Stop
-    
+
     Write-Host "✓ ワークフローのインポートに成功しました！" -ForegroundColor Green
     Write-Host "  ワークフローID: $($response.data.id)" -ForegroundColor Cyan
     Write-Host "  ワークフロー名: $($response.data.name)" -ForegroundColor Cyan
@@ -91,4 +91,14 @@ try {
 }
 
 Write-Host "=== インポート完了 ===" -ForegroundColor Green
+
+
+
+
+
+
+
+
+
+
 
