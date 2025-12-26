@@ -9,6 +9,30 @@
 - **目的**: MCP統合型ワークフロー自動化プラットフォーム
 - **リポジトリ**: https://github.com/hadayalab-web/hadayalab-automation-platform
 - **実行環境**: n8n Cloud (https://hadayalab.app.n8n.cloud)
+- **n8n Cloud プロジェクト（フォルダ）**: https://hadayalab.app.n8n.cloud/projects/9D29Es58GIo6IPkZ/workflows
+  - **プロジェクトID**: `9D29Es58GIo6IPkZ`
+  - **プロジェクト名**: `hadayalab-automation-platform`
+  - **用途**: プロジェクト関連のワークフローを管理
+
+### フォルダ（プロジェクト）構成
+
+n8n Cloudのワークフローは以下の2つのフォルダ（プロジェクト）で整理されています:
+
+#### Personal - 私の使用用途
+
+- **URL**: https://hadayalab.app.n8n.cloud/projects/fPT5foO8DCTDBr0k/workflows
+- **プロジェクトID**: `fPT5foO8DCTDBr0k`
+- **用途**: 個人的な自動化や実験的なワークフロー
+- **説明**: 個人的な使用目的のワークフローを保存
+
+#### hadayalab-automation-platform - プロジェクト用途
+
+- **URL**: https://hadayalab.app.n8n.cloud/projects/9D29Es58GIo6IPkZ/workflows
+- **プロジェクトID**: `9D29Es58GIo6IPkZ`
+- **用途**: hadayalab-automation-platformプロジェクト関連のワークフロー
+- **説明**: プロジェクトで使用する本番ワークフローを保存
+
+**状態**: ✅ 設定完了（2025-12-26）
 
 ### 3プロジェクト連携構造
 
