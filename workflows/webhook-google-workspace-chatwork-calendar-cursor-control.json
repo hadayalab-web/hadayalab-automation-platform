@@ -253,15 +253,13 @@
       "parameters": {
         "method": "POST",
         "url": "=https://api.chatwork.com/v2/rooms/{{ $json.body.roomId }}/tasks",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "authentication": "headerAuth",
         "sendHeaders": true,
-        "sendQuery": false,
         "headerParameters": {
           "parameters": [
             {
               "name": "X-ChatWorkToken",
-              "value": "=e973fd7311ae06d1deb377bd1ecb7d8e"
+              "value": "={{ $env.CHATWORK_API_TOKEN }}"
             }
           ]
         },
@@ -289,7 +287,8 @@
       "name": "Chatwork Create Task",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [650, 400]
+      "position": [650, 400],
+      "webhookId": ""
     },
     {
       "parameters": {
