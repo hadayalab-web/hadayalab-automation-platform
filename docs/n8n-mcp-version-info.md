@@ -97,3 +97,12 @@ npm view n8n-mcp versions --json | ConvertFrom-Json | Select-Object -Last 10
 
 
 
+
+
+
+
+
+
+
+
+

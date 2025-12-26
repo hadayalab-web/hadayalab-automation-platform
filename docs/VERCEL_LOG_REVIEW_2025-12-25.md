@@ -508,3 +508,11 @@ Telegram配信:
 
 **Review Completed**: 2025-12-25
 **Next Review**: 次回ログレビュー（修正デプロイ後）
+
+
+
+
+
+
+
+

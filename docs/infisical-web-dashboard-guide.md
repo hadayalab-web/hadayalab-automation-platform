@@ -115,3 +115,12 @@ infisical secrets get N8N_API_URL
 
 
 
+
+
+
+
+
+
+
+
+

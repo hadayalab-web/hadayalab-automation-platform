@@ -63,6 +63,56 @@ hadayalab-automation-platform/
 └── .github/workflows/ # CI/CD
 ```
 
+## 🔗 関連リポジトリ
+
+このプロジェクトは以下のリポジトリと連携しています：
+
+### 1. cryptosignal-ai
+**役割**: CryptoTrade Academyコアシステム（Vercelデプロイ、Telegram配信）
+
+**関連機能**:
+- Vercel Cron Job（イベント駆動配信）
+- Emergency Briefing Trigger（本リポジトリのn8nワークフローと連携）
+- CryptoQuant API、Grok AI統合
+
+**パス**: `C:\Users\chiba\cryptosignal-ai\`
+
+**参照方法**: CryptoTrade Academyのコアシステム実装・API連携はcryptosignal-aiリポジトリを参照してください。
+
+---
+
+### 2. hadayalab-knowledge-base
+**役割**: 戦略ドキュメント・理論文献の管理
+
+**関連ドキュメント**:
+- `CryptoTrade Academy - Complete SSOT v5.1.md`（戦略SSOT）
+- `CryptoTrade Academy - Sales Strategy Doping v2.0 FINAL.md`
+- `CryptoTrade Academy - Creative Execution Master Guide v1.0.md`
+- `CryptoTrade Academy - Zero-Budget Affiliate DRM Strategy v1.1 + APDS v1.0.md`
+
+**パス**: `C:\Users\chiba\hadayalab-knowledge-base\literature\strategy\`
+
+**参照方法**: n8nワークフロー設計時は、knowledge-baseの戦略ドキュメント（Complete SSOT v5.1）を参照してください。
+
+---
+
+## 🔄 プロジェクト間の連携
+
+```
+hadayalab-knowledge-base (戦略・理論)
+    ↓
+cryptosignal-ai (コアシステム実装)
+    ↓
+hadayalab-automation-platform (n8nワークフロー自動化)
+```
+
+**フロー**:
+1. **knowledge-base**: 戦略ドキュメント（Complete SSOT v5.1）を参照
+2. **cryptosignal-ai**: Complete SSOT v5.1に基づいてコアシステムを実装
+3. **automation-platform**: Complete SSOT v5.1に基づいてn8nワークフローを実装
+
+---
+
 ## 🔗 リンク
 
 - [n8n Cloud](https://hadayalab.app.n8n.cloud)
