@@ -431,19 +431,35 @@ n8nに関する作業を行う前に、必ずこのドキュメントを参照�
    - Cursor Settings → Tools & MCP → [MCP名] → "Show Output"
    - エラーメッセージを確認
 
-### ワークフローがインポートできない場合
+### ワークフローがインポートできない場合（実証済みベストプラクティス）
 
-1. **GitHubへのプッシュ確認**
-   - ファイルがGitHubにプッシュされているか確認
-   - GitHub Actionsがgreenになっているか確認
+**詳細**: [ワークフローインポートベストプラクティス](./n8n-complete-SSOT-workflow-import-best-practices.md) を参照
 
-2. **URL形式の確認**
-   - 正しいURL形式を使用しているか確認
-   - ファイル名が正しいか確認
+#### エラー: "Install this node to use it" / "Node is not currently installed"
 
-3. **JSON形式の確認**
-   - `npm run format:check`でJSON形式を確認
-   - ワークフローJSONの構文エラーがないか確認
+- **原因**: 存在しないノードタイプがワークフローに含まれている
+- **対策**: ワークフロー作成前に`@n8n-local [ノード名]ノードを検索して`で存在確認
+
+#### エラー: "Cannot read properties of undefined (reading 'execute')"
+
+- **原因**: 認証情報が設定されていない、またはノードがインストールされていない
+- **対策**: 各ノードで認証情報を設定、ノードの存在確認
+
+#### エラー: "request/body must NOT have additional properties"
+
+- **原因**: n8n APIが受け付けないプロパティが含まれている
+- **対策**: `name`, `nodes`, `connections`, `settings`のみを保持。`versionId`, `updatedAt`, `tags`等を削除
+- **推奨**: `scripts/import-workflow-to-n8n.py`で自動クリーンアップ
+
+#### エラー: "request/body/tags is read-only"
+
+- **原因**: `tags`プロパティをワークフロー作成時に含めた
+- **対策**: 作成時は`tags`を含めず、作成後にn8n Dashboardで設定
+
+**ベストプラクティス**:
+1. ノードの存在確認（`@n8n-local`で検索）
+2. インポートスクリプト使用（`scripts/import-workflow-to-n8n.py`）
+3. レスポンスコード200/201の両方を成功として処理
 
 ### ワークフローが実行できない場合
 
@@ -475,6 +491,25 @@ n8nに関する作業を行う前に、必ずこのドキュメントを参照�
 ---
 
 **最終更新**: 2025-12-26
-**バージョン**: 1.0.0（n8n関連ナレッジ完全統合）
+**バージョン**: 1.1.0（ワークフローインポートベストプラクティス追加）
 **メンテナー**: HadayaLab
+
+## 🔄 更新履歴
+
+### 2025-12-26 (v1.1.0)
+- **ワークフローインポートベストプラクティスを追加**（実証済み）
+  - ノードの存在確認手順
+  - ワークフローJSONのクリーンアップ方法
+  - n8n APIが受け付けるプロパティの明確化
+  - インポートスクリプトの推奨使用方法
+  - レスポンスステータスコードの扱い
+  - エラーハンドリングの改善
+- **トラブルシューティングセクションを大幅拡充**
+  - "Install this node to use it"エラーの対処法
+  - "Cannot read properties of undefined (reading 'execute')"エラーの対処法
+  - n8n APIエラーの対処法（additional properties, read-only properties等）
+
+### 2025-12-26 (v1.0.0)
+- 初版作成
+- n8n関連のすべてのナレッジをこのSSOTに統合
 
