@@ -6,6 +6,19 @@
 
 ## 📋 ワークフロー一覧
 
+### google-workspace-control
+- **ファイル**: `workflows/webhook-google-workspace-control.json`
+- **対象フォルダ**: hadayalab-automation-platform
+- **説明**: Google Workspace（Gmail、Sheets、Drive、Calendar）制御ワークフロー
+
+### google-workspace-chatwork-control
+- **ファイル**: `workflows/webhook-google-workspace-chatwork-control.json`
+- **対象フォルダ**: Personal
+- **説明**: Google Workspace（Gmail、Sheets）とChatwork統合ワークフロー
+- **説明**: CursorからMCP経由でGoogle Workspace（Gmail、Google Sheets、Google Drive）を制御
+- **アカウント**: `admin@cryptotradeacademy.io`
+- **ドキュメント**: `docs/workflows/google-workspace-control-workflow.md`
+
 ### @simple-time-check
 - **ファイル**: `workflows/simple-time-check.json`
 - **説明**: 簡単な実験用ワークフロー（現在時刻取得）
