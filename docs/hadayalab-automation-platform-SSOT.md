@@ -362,6 +362,7 @@ n8n-mcp@2.28.7
 |------------|------|
 | README.md | プロジェクトの入り口、概要とクイックスタート |
 | hadayalab-automation-platform-SSOT.md | プロジェクト全体の真実の唯一の情報源 |
+| n8n-whop-full-strategy-SSOT.md | n8n + Whop完全活用戦略（SSOT） ⭐ 新規追加 |
 | n8n-cloud-sync.md | 同期運用の詳細手順 |
 | workflow-conventions.md | 命名規約と構造ルール |
 
@@ -369,7 +370,10 @@ n8n-mcp@2.28.7
 
 ### 内部ドキュメント
 
+- **[n8n + Whop 完全活用戦略 SSOT](./n8n-whop-full-strategy-SSOT.md)** - **n8n + Whop完全統合戦略（SSOT）** ⭐ 新規追加
 - [n8n MCP機能比較 SSOT](./n8n-mcp-capabilities-comparison-SSOT.md) - **n8n MCP機能の完全ガイド（SSOT）**
+- [whop-control-workflow SSOT](./whop-control-workflow-SSOT.md) - Whop制御ワークフローのSSOT
+- [WHOP_API_CAPABILITIES_COMPLETE.md](./WHOP_API_CAPABILITIES_COMPLETE.md) - Whop API完全機能一覧
 - [n8n Cloud同期運用](./n8n-cloud-sync.md)
 - [ワークフロー命名規約](./workflow-conventions.md)
 - [ドキュメント一覧](./README.md)

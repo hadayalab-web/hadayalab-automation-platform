@@ -1,0 +1,8 @@
+年末のお掃除: 不要ファイルをアーカイブに移動
+
+- 完了済みレビューファイル（COPILOT_*.md, AGENT_REVIEW_SUMMARY.md など）をアーカイブに移動
+- 一時ファイル（copilot-agents-request.txt, review-request-prompt.txt, workflow-id.txt, workflow-vercel-n8n-logs.json）をアーカイブに移動
+- README.mdを更新（関連リポジトリへの参照を追加）
+
+すべてのファイルは _archive/2025-12-25/ にアーカイブされています。
+

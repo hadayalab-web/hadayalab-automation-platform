@@ -399,3 +399,4 @@ vercel logs dpl_6z4uk7ksfaX6T1fsDhcwizy3kCGP --json | jq 'select(.level == "erro
 
 
 
+

@@ -1,0 +1,330 @@
+{
+  "name": "telegram-monitor-realtime",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "telegram-trigger-1",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        250,
+        300
+      ],
+      "webhookId": "telegram-monitor"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "assignment-1",
+              "name": "timestamp",
+              "value": "={{ $now }}",
+              "type": "dateTime"
+            },
+            {
+              "id": "assignment-2",
+              "name": "message_id",
+              "value": "={{ $json.message.message_id }}",
+              "type": "number"
+            },
+            {
+              "id": "assignment-3",
+              "name": "chat_id",
+              "value": "={{ $json.message.chat.id }}",
+              "type": "string"
+            },
+            {
+              "id": "assignment-4",
+              "name": "chat_title",
+              "value": "={{ $json.message.chat.title || $json.message.chat.username || 'Private' }}",
+              "type": "string"
+            },
+            {
+              "id": "assignment-5",
+              "name": "chat_type",
+              "value": "={{ $json.message.chat.type }}",
+              "type": "string"
+            },
+            {
+              "id": "assignment-6",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "assignment-7",
+              "name": "text_length",
+              "value": "={{ $json.message.text ? $json.message.text.length : 0 }}",
+              "type": "number"
+            },
+            {
+              "id": "assignment-8",
+              "name": "from_user",
+              "value": "={{ $json.message.from.username || $json.message.from.first_name || 'Unknown' }}",
+              "type": "string"
+            },
+            {
+              "id": "assignment-9",
+              "name": "market",
+              "value": "={{ $json.message.chat.title ? ($json.message.chat.title.includes('EN') ? 'EN' : $json.message.chat.title.includes('AR') ? 'AR' : $json.message.chat.title.includes('KO') ? 'KO' : $json.message.chat.title.includes('JA') ? 'JA' : $json.message.chat.title.includes('ES') ? 'ES' : $json.message.chat.title.includes('PT') ? 'PT-BR' : 'UNKNOWN') : 'UNKNOWN' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-message-data-1",
+      "name": "Format Message Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.chat_type }}",
+              "operation": "equals",
+              "value2": "channel"
+            }
+          ]
+        }
+      },
+      "id": "filter-channels-1",
+      "name": "Filter: Channels Only",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// メッセージ内容を解析して60-second reads要件をチェック\nconst text = $input.item.json.text || '';\nconst textLength = text.length;\nconst wordCount = text.split(/\\s+/).filter(w => w.length > 0).length;\nconst market = $input.item.json.market || 'UNKNOWN';\n\n// 市場別の文字数制限をチェック\nlet maxChars = 1500; // デフォルト\nlet maxWords = 500; // デフォルト\nlet requirement = 'Unknown';\n\nif (market === 'JA') {\n  maxChars = 300;\n  requirement = '300文字以内（60秒読了）';\n} else if (['EN', 'AR', 'KO', 'ES', 'PT-BR'].includes(market)) {\n  maxWords = 150;\n  requirement = '150語以内（60-second reads）';\n}\n\nconst isCompliant = market === 'JA' ? textLength <= maxChars : wordCount <= maxWords;\nconst deviation = market === 'JA' ? textLength - maxChars : wordCount - maxWords;\n\nreturn [{\n  json: {\n    ...$input.item.json,\n    analysis: {\n      text_length: textLength,\n      word_count: wordCount,\n      market: market,\n      requirement: requirement,\n      max_chars: maxChars,\n      max_words: maxWords,\n      is_compliant: isCompliant,\n      deviation: deviation,\n      compliance_status: isCompliant ? '✅ COMPLIANT' : '❌ DEVIATION',\n      message_preview: text.substring(0, 100) + (text.length > 100 ? '...' : '')\n    }\n  }\n}];"
+      },
+      "id": "analyze-message-1",
+      "name": "Analyze Message (60-sec reads)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        850,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.analysis.is_compliant }}",
+              "value2": false
+            }
+          ]
+        }
+      },
+      "id": "filter-deviations-1",
+      "name": "Filter: Deviations Only",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1050,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://hooks.slack.com/services/YOUR_WEBHOOK_URL",
+        "sendBody": true,
+        "contentType": "json",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "=❌ Telegram Message Deviation Detected\n\n*Market*: {{ $json.market }}\n*Chat*: {{ $json.chat_title }}\n*Requirement*: {{ $json.analysis.requirement }}\n*Status*: {{ $json.analysis.compliance_status }}\n*Deviation*: {{ $json.analysis.deviation }}\n*Text Length*: {{ $json.analysis.text_length }}\n*Word Count*: {{ $json.analysis.word_count }}\n\n*Message Preview*:\n```\n{{ $json.analysis.message_preview }}\n```"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "notify-slack-1",
+      "name": "Notify: Slack (Deviations)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1250,
+        300
+      ],
+      "notes": "オプション: 偏差検知時にSlackに通知"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "assignment-1",
+              "name": "summary",
+              "value": "=Telegram Message Received",
+              "type": "string"
+            },
+            {
+              "id": "assignment-2",
+              "name": "data",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-log-1",
+      "name": "Format Log",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        850,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "sheetId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Telegram Messages",
+          "mode": "list",
+          "cachedResultName": "Telegram Messages"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ $json.timestamp }}",
+            "message_id": "={{ $json.message_id }}",
+            "chat_id": "={{ $json.chat_id }}",
+            "chat_title": "={{ $json.chat_title }}",
+            "chat_type": "={{ $json.chat_type }}",
+            "market": "={{ $json.market }}",
+            "text_length": "={{ $json.analysis.text_length }}",
+            "word_count": "={{ $json.analysis.word_count }}",
+            "is_compliant": "={{ $json.analysis.is_compliant }}",
+            "compliance_status": "={{ $json.analysis.compliance_status }}",
+            "message_preview": "={{ $json.analysis.message_preview }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "log-to-sheets-1",
+      "name": "Log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1050,
+        500
+      ],
+      "notes": "すべてのメッセージをGoogle Sheetsに記録"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Format Message Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Message Data": {
+      "main": [
+        [
+          {
+            "node": "Filter: Channels Only",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Format Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: Channels Only": {
+      "main": [
+        [
+          {
+            "node": "Analyze Message (60-sec reads)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Message (60-sec reads)": {
+      "main": [
+        [
+          {
+            "node": "Filter: Deviations Only",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Format Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: Deviations Only": {
+      "main": [
+        [
+          {
+            "node": "Notify: Slack (Deviations)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Log": {
+      "main": [
+        [
+          {
+            "node": "Log to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "versionId": "telegram-monitor-realtime-v1"
+}
+

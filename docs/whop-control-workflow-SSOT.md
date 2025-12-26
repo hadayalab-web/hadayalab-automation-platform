@@ -275,9 +275,11 @@ Whopのメンバー一覧を取得して
 
 ## 📝 関連ドキュメント
 
+- **[n8n + Whop 完全活用戦略 SSOT](./n8n-whop-full-strategy-SSOT.md)** - n8n + Whop完全統合戦略（親戦略ドキュメント） ⭐
 - [n8nワークフロー完全制御 SSOT](./n8n-workflow-full-control-SSOT.md)
 - [n8nワークフロー直接制御戦略 SSOT](./direct-n8n-control-strategy-SSOT.md)
 - [n8n MCP機能比較 SSOT](./n8n-mcp-capabilities-comparison-SSOT.md)
+- [WHOP_API_CAPABILITIES_COMPLETE.md](./WHOP_API_CAPABILITIES_COMPLETE.md) - Whop API完全機能一覧
 
 ---
 

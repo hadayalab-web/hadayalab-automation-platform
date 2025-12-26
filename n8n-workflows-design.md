@@ -4,6 +4,9 @@
 
 このドキュメントは、3つの戦略ドキュメントに基づいてn8nで実装するワークフローの設計をまとめています。
 
+**⭐ 親戦略ドキュメント（最新）:**
+- **[n8n + Whop 完全活用戦略 SSOT](./docs/n8n-whop-full-strategy-SSOT.md)** - n8n + Whop完全統合戦略（**最初に参照**）
+
 **参照ドキュメント:**
 - CryptoTrade Academy - Creative Execution Master Guide v1.0
 - CryptoTrade Academy - Sales Strategy Doping v2.0 FINAL

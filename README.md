@@ -23,6 +23,8 @@ HadayaLab Automation Platform - MCP統合型ワークフロー自動化プラッ
 ## 📚 ドキュメント
 
 - **[hadayalab-automation-platform SSOT](./docs/hadayalab-automation-platform-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
+- **[n8n + Whop 完全活用戦略 SSOT](./docs/n8n-whop-full-strategy-SSOT.md)** - n8n + Whop完全統合戦略（**戦略実装時に参照**） ⭐ 新規追加
+- **[n8n + Whop + Telegram 統合戦略 SSOT](./docs/n8n-whop-telegram-integration-SSOT.md)** - n8n + Whop + Telegram統合戦略（**Telegram統合時に参照**） ⭐ 新規追加
 - **[n8n MCP機能比較 SSOT](./docs/n8n-mcp-capabilities-comparison-SSOT.md)** - n8nネイティブMCPとn8n-mcpパッケージの機能と制限の完全ガイド（**MCP機能確認時に参照**）
 - [GitHub Copilot Proセットアップ](./docs/github-copilot-setup.md) - GitHub Copilot連携のセットアップ（**GitHub Copilot連携開始時に参照**）
 - [GitHub Copilot タスク一覧](./docs/github-copilot-tasks.md) - GitHub Copilotに任せられる具体的なタスク（**GitHub Copilot活用時に参照**）

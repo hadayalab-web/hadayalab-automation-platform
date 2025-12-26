@@ -1,0 +1,905 @@
+{
+  "name": "google-workspace-control",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "google-workspace-control",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger-1",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [250, 300],
+      "webhookId": "google-workspace-control"
+    },
+    {
+      "parameters": {
+        "mode": "rules",
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-1",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "gmail_send",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "gmail_send"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-2",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "sheets_read",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "sheets_read"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-3",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "sheets_write",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "sheets_write"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-4",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "sheets_update",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "sheets_update"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-5",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "drive_list",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "drive_list"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-6",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "drive_upload",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "drive_upload"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-7",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "drive_download",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "drive_download"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-8",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "calendar_list",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "calendar_list"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-9",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "calendar_create",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "calendar_create"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-10",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "calendar_update",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "calendar_update"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-11",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "calendar_delete",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "calendar_delete"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-12",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "docs_create",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "docs_create"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-13",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "docs_update",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "docs_update"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-14",
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "docs_read",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "docs_read"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "switch-action-1",
+      "name": "Switch Action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.body.to }}",
+        "subject": "={{ $json.body.subject }}",
+        "message": "={{ $json.body.body || $json.body.message }}",
+        "options": {
+          "attachments": "={{ $json.body.attachments }}"
+        }
+      },
+      "id": "gmail-send-1",
+      "name": "Gmail Send",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [650, 100],
+      "credentials": {
+        "gmailOAuth2": {
+          "name": "Gmail OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.body.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $json.body.sheetName || 'Sheet1' }}",
+          "mode": "name"
+        },
+        "options": {
+          "range": "={{ $json.body.range }}",
+          "valueRenderOption": "={{ $json.body.valueRenderOption || 'FORMATTED_VALUE' }}"
+        }
+      },
+      "id": "sheets-read-1",
+      "name": "Sheets Read",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [650, 200],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Google Sheets OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.body.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $json.body.sheetName || 'Sheet1' }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": "={{ $json.body.columns }}"
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "useAppend": true
+        }
+      },
+      "id": "sheets-write-1",
+      "name": "Sheets Write",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [650, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Google Sheets OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.body.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $json.body.sheetName || 'Sheet1' }}",
+          "mode": "name"
+        },
+        "columnToMatchOn": "={{ $json.body.columnToMatchOn }}",
+        "valueToMatchOn": "={{ $json.body.valueToMatchOn }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": "={{ $json.body.columns }}"
+        },
+        "options": {}
+      },
+      "id": "sheets-update-1",
+      "name": "Sheets Update",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [650, 400],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Google Sheets OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "list",
+        "options": {
+          "q": "={{ $json.body.query }}",
+          "pageSize": "={{ $json.body.pageSize || 100 }}",
+          "fields": "={{ $json.body.fields || 'files(id, name, mimeType, modifiedTime, size)' }}"
+        }
+      },
+      "id": "drive-list-1",
+      "name": "Drive List",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3.1,
+      "position": [650, 500],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "name": "Google Drive OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "name": "={{ $json.body.fileName }}",
+        "binaryData": true,
+        "options": {
+          "parents": "={{ $json.body.folderId }}",
+          "appProperties": "={{ $json.body.appProperties }}"
+        }
+      },
+      "id": "drive-upload-1",
+      "name": "Drive Upload",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3.1,
+      "position": [650, 600],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "name": "Google Drive OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.body.fileId }}",
+          "mode": "id"
+        },
+        "options": {
+          "fileName": "={{ $json.body.fileName }}"
+        }
+      },
+      "id": "drive-download-1",
+      "name": "Drive Download",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3.1,
+      "position": [650, 700],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "name": "Google Drive OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendarId": {
+          "__rl": true,
+          "value": "={{ $json.body.calendarId || 'primary' }}",
+          "mode": "id"
+        },
+        "options": {
+          "q": "={{ $json.body.query }}",
+          "timeMin": "={{ $json.body.timeMin }}",
+          "timeMax": "={{ $json.body.timeMax }}",
+          "maxResults": "={{ $json.body.maxResults || 250 }}"
+        }
+      },
+      "id": "calendar-list-1",
+      "name": "Calendar List",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [650, 800],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "name": "Google Calendar OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "calendarId": {
+          "__rl": true,
+          "value": "={{ $json.body.calendarId || 'primary' }}",
+          "mode": "id"
+        },
+        "start": "={{ $json.body.start }}",
+        "end": "={{ $json.body.end }}",
+        "additionalFields": {
+          "summary": "={{ $json.body.summary }}",
+          "description": "={{ $json.body.description }}",
+          "location": "={{ $json.body.location }}",
+          "attendees": "={{ $json.body.attendees }}",
+          "sendUpdates": "={{ $json.body.sendUpdates || 'none' }}"
+        }
+      },
+      "id": "calendar-create-1",
+      "name": "Calendar Create",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [650, 900],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "name": "Google Calendar OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendarId": {
+          "__rl": true,
+          "value": "={{ $json.body.calendarId || 'primary' }}",
+          "mode": "id"
+        },
+        "eventId": {
+          "__rl": true,
+          "value": "={{ $json.body.eventId }}",
+          "mode": "id"
+        },
+        "updateFields": {
+          "summary": "={{ $json.body.summary }}",
+          "description": "={{ $json.body.description }}",
+          "location": "={{ $json.body.location }}",
+          "start": "={{ $json.body.start }}",
+          "end": "={{ $json.body.end }}",
+          "attendees": "={{ $json.body.attendees }}",
+          "sendUpdates": "={{ $json.body.sendUpdates || 'none' }}"
+        }
+      },
+      "id": "calendar-update-1",
+      "name": "Calendar Update",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [650, 1000],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "name": "Google Calendar OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendarId": {
+          "__rl": true,
+          "value": "={{ $json.body.calendarId || 'primary' }}",
+          "mode": "id"
+        },
+        "eventId": {
+          "__rl": true,
+          "value": "={{ $json.body.eventId }}",
+          "mode": "id"
+        },
+        "options": {
+          "sendUpdates": "={{ $json.body.sendUpdates || 'none' }}"
+        }
+      },
+      "id": "calendar-delete-1",
+      "name": "Calendar Delete",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [650, 1100],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "name": "Google Calendar OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "title": "={{ $json.body.title }}",
+        "options": {}
+      },
+      "id": "docs-create-1",
+      "name": "Docs Create",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 1.1,
+      "position": [650, 1200],
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "name": "Google Docs OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.body.documentId }}",
+          "mode": "id"
+        },
+        "content": "={{ $json.body.content }}",
+        "options": {}
+      },
+      "id": "docs-update-1",
+      "name": "Docs Update",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 1.1,
+      "position": [650, 1300],
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "name": "Google Docs OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.body.documentId }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "docs-read-1",
+      "name": "Docs Read",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 1.1,
+      "position": [650, 1400],
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "name": "Google Docs OAuth2 account for admin@cryptotradeacademy.io"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "assignment-1",
+              "name": "success",
+              "value": "=true",
+              "type": "boolean"
+            },
+            {
+              "id": "assignment-2",
+              "name": "action",
+              "value": "={{ $('Webhook Trigger').item.json.body.action }}",
+              "type": "string"
+            },
+            {
+              "id": "assignment-3",
+              "name": "data",
+              "value": "={{ $json }}",
+              "type": "object"
+            },
+            {
+              "id": "assignment-4",
+              "name": "timestamp",
+              "value": "={{ $now }}",
+              "type": "dateTime"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-success-response-1",
+      "name": "Format Success Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": $json.success, \"action\": $json.action, \"data\": $json.data, \"timestamp\": $json.timestamp } }}",
+        "options": {}
+      },
+      "id": "respond-to-webhook-1",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "assignment-1",
+              "name": "success",
+              "value": "=false",
+              "type": "boolean"
+            },
+            {
+              "id": "assignment-2",
+              "name": "error",
+              "value": "={{ $json.message || 'Unknown error' }}",
+              "type": "string"
+            },
+            {
+              "id": "assignment-3",
+              "name": "action",
+              "value": "={{ $('Webhook Trigger').item.json.body.action }}",
+              "type": "string"
+            },
+            {
+              "id": "assignment-4",
+              "name": "timestamp",
+              "value": "={{ $now }}",
+              "type": "dateTime"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-error-response-1",
+      "name": "Format Error Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [850, 800]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": $json.success, \"error\": $json.error, \"action\": $json.action, \"timestamp\": $json.timestamp } }}",
+        "options": {}
+      },
+      "id": "respond-to-webhook-error-1",
+      "name": "Respond to Webhook (Error)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1050, 800]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[{ "node": "Switch Action", "type": "main", "index": 0 }]]
+    },
+    "Switch Action": {
+      "main": [
+        [{ "node": "Gmail Send", "type": "main", "index": 0 }],
+        [{ "node": "Sheets Read", "type": "main", "index": 0 }],
+        [{ "node": "Sheets Write", "type": "main", "index": 0 }],
+        [{ "node": "Sheets Update", "type": "main", "index": 0 }],
+        [{ "node": "Drive List", "type": "main", "index": 0 }],
+        [{ "node": "Drive Upload", "type": "main", "index": 0 }],
+        [{ "node": "Drive Download", "type": "main", "index": 0 }],
+        [{ "node": "Calendar List", "type": "main", "index": 0 }],
+        [{ "node": "Calendar Create", "type": "main", "index": 0 }],
+        [{ "node": "Calendar Update", "type": "main", "index": 0 }],
+        [{ "node": "Calendar Delete", "type": "main", "index": 0 }],
+        [{ "node": "Docs Create", "type": "main", "index": 0 }],
+        [{ "node": "Docs Update", "type": "main", "index": 0 }],
+        [{ "node": "Docs Read", "type": "main", "index": 0 }]
+      ]
+    },
+    "Gmail Send": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Sheets Read": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Sheets Write": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Sheets Update": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Drive List": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Drive Upload": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Drive Download": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Calendar List": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Calendar Create": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Calendar Update": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Calendar Delete": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Docs Create": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Docs Update": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Docs Read": {
+      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
+      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+    },
+    "Format Success Response": {
+      "main": [[{ "node": "Respond to Webhook", "type": "main", "index": 0 }]]
+    },
+    "Format Error Response": {
+      "main": [[{ "node": "Respond to Webhook (Error)", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": ["production", "mcp", "google-workspace"],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-26T00:00:00.000Z",
+  "versionId": "1"
+}
