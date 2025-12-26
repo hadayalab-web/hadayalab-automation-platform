@@ -7,6 +7,10 @@ import json
 import sys
 from pathlib import Path
 
+# 標準出力のエンコーディングをUTF-8に設定
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 def validate_workflow(workflow_path: str):
     """ワークフローの構造を検証"""
     
@@ -70,7 +74,7 @@ def validate_workflow(workflow_path: str):
         print()
         return False
     else:
-        print("✅ ワークフローの構造は正常です")
+        print("[OK] ワークフローの構造は正常です")
         print()
         return True
 

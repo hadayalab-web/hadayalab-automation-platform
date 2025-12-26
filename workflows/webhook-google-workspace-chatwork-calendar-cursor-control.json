@@ -211,8 +211,7 @@
       "position": [650, 200],
       "credentials": {
         "gmailOAuth2": {
-          "name": "Gmail OAuth2 account for admin@cryptotradeacademy.io",
-          "type": "gmailOAuth2"
+          "name": "Gmail OAuth2 account for admin@cryptotradeacademy.io"
         }
       }
     },
