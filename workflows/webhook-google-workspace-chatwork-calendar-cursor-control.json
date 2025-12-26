@@ -1,10 +1,10 @@
 {
-  "name": "google-workspace-chatwork-control",
+  "name": "cursor-gmail-chatwork-calendar-control",
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "google-workspace-chatwork-control",
+        "path": "cursor-gmail-chatwork-calendar-control",
         "responseMode": "responseNode",
         "options": {}
       },
@@ -13,7 +13,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [250, 300],
-      "webhookId": "google-workspace-chatwork-control"
+      "webhookId": "cursor-gmail-chatwork-calendar-control"
     },
     {
       "parameters": {
@@ -54,29 +54,6 @@
                   {
                     "id": "condition-2",
                     "leftValue": "={{ $json.body.action }}",
-                    "rightValue": "sheets_read",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "sheets_read"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict"
-                },
-                "conditions": [
-                  {
-                    "id": "condition-3",
-                    "leftValue": "={{ $json.body.action }}",
                     "rightValue": "chatwork_send_message",
                     "operator": {
                       "type": "string",
@@ -98,7 +75,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "condition-4",
+                    "id": "condition-3",
                     "leftValue": "={{ $json.body.action }}",
                     "rightValue": "chatwork_create_task",
                     "operator": {
@@ -121,7 +98,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "condition-5",
+                    "id": "condition-4",
                     "leftValue": "={{ $json.body.action }}",
                     "rightValue": "calendar_list",
                     "operator": {
@@ -144,7 +121,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "condition-6",
+                    "id": "condition-5",
                     "leftValue": "={{ $json.body.action }}",
                     "rightValue": "calendar_create",
                     "operator": {
@@ -167,7 +144,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "condition-7",
+                    "id": "condition-6",
                     "leftValue": "={{ $json.body.action }}",
                     "rightValue": "calendar_update",
                     "operator": {
@@ -190,7 +167,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "condition-8",
+                    "id": "condition-7",
                     "leftValue": "={{ $json.body.action }}",
                     "rightValue": "calendar_delete",
                     "operator": {
@@ -203,75 +180,6 @@
               },
               "renameOutput": true,
               "outputKey": "calendar_delete"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict"
-                },
-                "conditions": [
-                  {
-                    "id": "condition-9",
-                    "leftValue": "={{ $json.body.action }}",
-                    "rightValue": "drive_list",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "drive_list"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict"
-                },
-                "conditions": [
-                  {
-                    "id": "condition-10",
-                    "leftValue": "={{ $json.body.action }}",
-                    "rightValue": "drive_upload",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "drive_upload"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict"
-                },
-                "conditions": [
-                  {
-                    "id": "condition-11",
-                    "leftValue": "={{ $json.body.action }}",
-                    "rightValue": "drive_download",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "drive_download"
             }
           ]
         },
@@ -310,27 +218,6 @@
     },
     {
       "parameters": {
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "googleSheetsOAuth2",
-        "documentId": "={{ $json.body.spreadsheetId }}",
-        "sheetName": "={{ $json.body.sheetName }}",
-        "range": "={{ $json.body.range }}",
-        "options": {}
-      },
-      "id": "sheets-read",
-      "name": "Google Sheets Read",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.4,
-      "position": [650, 300],
-      "credentials": {
-        "googleSheetsOAuth2": {
-          "name": "Google Sheets OAuth2 account for admin@cryptotradeacademy.io",
-          "type": "googleSheetsOAuth2"
-        }
-      }
-    },
-    {
-      "parameters": {
         "method": "POST",
         "url": "=https://api.chatwork.com/v2/rooms/{{ $json.body.roomId }}/messages",
         "authentication": "headerAuth",
@@ -359,7 +246,7 @@
       "name": "Chatwork Send Message",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [650, 400],
+      "position": [650, 300],
       "webhookId": ""
     },
     {
@@ -402,7 +289,7 @@
       "name": "Chatwork Create Task",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [650, 500]
+      "position": [650, 400]
     },
     {
       "parameters": {
@@ -423,7 +310,7 @@
       "name": "Calendar List",
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.1,
-      "position": [650, 600],
+      "position": [650, 500],
       "credentials": {
         "googleCalendarOAuth2Api": {
           "name": "Google Calendar OAuth2 account for admin@cryptotradeacademy.io"
@@ -452,7 +339,7 @@
       "name": "Calendar Create",
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.1,
-      "position": [650, 700],
+      "position": [650, 600],
       "credentials": {
         "googleCalendarOAuth2Api": {
           "name": "Google Calendar OAuth2 account for admin@cryptotradeacademy.io"
@@ -486,7 +373,7 @@
       "name": "Calendar Update",
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.1,
-      "position": [650, 800],
+      "position": [650, 700],
       "credentials": {
         "googleCalendarOAuth2Api": {
           "name": "Google Calendar OAuth2 account for admin@cryptotradeacademy.io"
@@ -514,7 +401,7 @@
       "name": "Calendar Delete",
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.1,
-      "position": [650, 900],
+      "position": [650, 800],
       "credentials": {
         "googleCalendarOAuth2Api": {
           "name": "Google Calendar OAuth2 account for admin@cryptotradeacademy.io"
@@ -523,72 +410,8 @@
     },
     {
       "parameters": {
-        "operation": "list",
-        "options": {
-          "q": "={{ $json.body.query }}",
-          "pageSize": "={{ $json.body.pageSize || 100 }}",
-          "fields": "={{ $json.body.fields || 'files(id, name, mimeType, modifiedTime, size)' }}"
-        }
-      },
-      "id": "drive-list",
-      "name": "Drive List",
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3.1,
-      "position": [650, 1000],
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "name": "Google Drive OAuth2 account for admin@cryptotradeacademy.io"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "upload",
-        "name": "={{ $json.body.fileName }}",
-        "binaryData": true,
-        "options": {
-          "parents": "={{ $json.body.folderId }}",
-          "appProperties": "={{ $json.body.appProperties }}"
-        }
-      },
-      "id": "drive-upload",
-      "name": "Drive Upload",
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3.1,
-      "position": [650, 1100],
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "name": "Google Drive OAuth2 account for admin@cryptotradeacademy.io"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "download",
-        "fileId": {
-          "__rl": true,
-          "value": "={{ $json.body.fileId }}",
-          "mode": "id"
-        },
-        "options": {
-          "fileName": "={{ $json.body.fileName }}"
-        }
-      },
-      "id": "drive-download",
-      "name": "Drive Download",
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3.1,
-      "position": [650, 1200],
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "name": "Google Drive OAuth2 account for admin@cryptotradeacademy.io"
-        }
-      }
-    },
-    {
-      "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ { \"success\": true, \"data\": $json } }}",
+        "responseBody": "={{ { \"success\": true, \"action\": $('Webhook Trigger').item.json.body.action, \"data\": $json, \"timestamp\": $now } }}",
         "options": {}
       },
       "id": "format-success-response",
@@ -600,7 +423,7 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ { \"success\": false, \"error\": $json.error || $json.message || \"Unknown error\" } }}",
+        "responseBody": "={{ { \"success\": false, \"action\": $('Webhook Trigger').item.json.body.action, \"error\": $json.error || $json.message || \"Unknown error\", \"timestamp\": $now } }}",
         "options": {},
         "responseCode": 500
       },
@@ -618,22 +441,15 @@
     "Switch Action": {
       "main": [
         [{ "node": "Gmail Send", "type": "main", "index": 0 }],
-        [{ "node": "Google Sheets Read", "type": "main", "index": 0 }],
         [{ "node": "Chatwork Send Message", "type": "main", "index": 0 }],
         [{ "node": "Chatwork Create Task", "type": "main", "index": 0 }],
         [{ "node": "Calendar List", "type": "main", "index": 0 }],
         [{ "node": "Calendar Create", "type": "main", "index": 0 }],
         [{ "node": "Calendar Update", "type": "main", "index": 0 }],
-        [{ "node": "Calendar Delete", "type": "main", "index": 0 }],
-        [{ "node": "Drive List", "type": "main", "index": 0 }],
-        [{ "node": "Drive Upload", "type": "main", "index": 0 }],
-        [{ "node": "Drive Download", "type": "main", "index": 0 }]
+        [{ "node": "Calendar Delete", "type": "main", "index": 0 }]
       ]
     },
     "Gmail Send": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]]
-    },
-    "Google Sheets Read": {
       "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]]
     },
     "Chatwork Send Message": {
@@ -653,15 +469,6 @@
     },
     "Calendar Delete": {
       "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]]
-    },
-    "Drive List": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]]
-    },
-    "Drive Upload": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]]
-    },
-    "Drive Download": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]]
     }
   },
   "pinData": {},
@@ -671,3 +478,4 @@
   "staticData": null,
   "tags": []
 }
+

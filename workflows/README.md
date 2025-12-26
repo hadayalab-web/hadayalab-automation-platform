@@ -6,6 +6,12 @@
 
 ## 📋 ワークフロー一覧
 
+### cursor-gmail-chatwork-calendar-control
+- **ファイル**: `workflows/webhook-google-workspace-chatwork-calendar-cursor-control.json`
+- **目的**: CursorからGmail、Chatwork、Google Calendarを制御
+- **フォルダ**: Personal
+- **ドキュメント**: `docs/workflows/cursor-gmail-chatwork-calendar-control-workflow.md`
+
 ### google-workspace-control
 - **ファイル**: `workflows/webhook-google-workspace-control.json`
 - **対象フォルダ**: hadayalab-automation-platform

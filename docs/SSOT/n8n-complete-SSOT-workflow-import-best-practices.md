@@ -1,6 +1,7 @@
 # n8nワークフローインポートベストプラクティス（実証済み）
 
 **作成日**: 2025-12-26
+**最終更新**: 2025-12-26
 **目的**: ワークフローインポート時のエラーと解決策をまとめたベストプラクティス
 
 ---
@@ -169,6 +170,8 @@ python scripts/import-workflow-to-n8n.py workflows/webhook-google-workspace-cont
 - ✅ エラーハンドリングが適切
 - ✅ ステータスコード200と201の両方を成功として処理
 
+**重要な注意事項**: `.env`ファイルが存在しない場合、スクリプトは`.env.env`ファイルも自動的に確認します。環境変数ファイルの命名規則に注意してください。
+
 ---
 
 ### 4. レスポンスステータスコードの扱い
@@ -201,27 +204,105 @@ if response.status_code in [200, 201]:
 
 ---
 
-### 6. 標準フロー（推奨）
+### 6. 標準フロー（実証済み）
 
 1. **ワークフロー作成・編集**（Cursor）
 2. **ノードの存在確認**（`@n8n-local`で検索）
 3. **ローカル検証**（`npm run format`, `npm run format:check`）
 4. **GitHubへコミット・プッシュ**（Cursor自動実行）
-5. **n8n Cloudへインポート**（`scripts/import-workflow-to-n8n.py`使用）
-6. **認証情報設定**（n8n Dashboard）
-7. **ワークフロー有効化**（n8n Dashboard）
+5. **環境変数ファイルの確認**
+   - `.env`ファイルが存在するか確認
+   - 存在しない場合は`.env.env`ファイルも確認
+   - `N8N_API_KEY`が設定されていることを確認
+6. **n8n Cloudへインポート**（`scripts/import-workflow-to-n8n.py`使用）
+   ```bash
+   python scripts/import-workflow-to-n8n.py workflows/workflow-name.json
+   ```
+7. **インポート結果の確認**
+   - ワークフローIDとURLを確認
+   - n8n Dashboardでワークフローが存在することを確認
+8. **フォルダへの移動**（必要な場合）
+   - Personalフォルダ: `https://hadayalab.app.n8n.cloud/projects/fPT5foO8DCTDBr0k/workflows`
+   - hadayalab-automation-platformフォルダ: `https://hadayalab.app.n8n.cloud/projects/9D29Es58GIo6IPkZ/workflows`
+   - n8n Dashboardでドラッグ&ドロップで移動
+9. **認証情報設定**（n8n Dashboard・人間の役割）
+   - 各ノードの認証情報を設定
+   - Google Workspace、Chatwork等の認証情報を設定
+10. **ワークフロー有効化**（n8n Dashboard・人間の役割）
+    - 「Activate」ボタンをクリック
+    - 「Available in MCP」を有効化（MCP経由でアクセスする場合）
+11. **テストと検証**（Cursor）
+    - テストスクリプトの作成
+    - Webhook URLの基本動作確認
+    - 各アクションのテスト（認証情報設定後）
 
 ---
 
-## 📝 チェックリスト
+## 📝 チェックリスト（実証済み）
 
 ワークフローインポート前の確認事項:
 
 - [ ] 使用するノードがすべて存在するか確認（`@n8n-local`で検索）
 - [ ] ワークフローJSONの形式が正しいか確認（`npm run format:check`）
 - [ ] 不要なプロパティが含まれていないか確認（`versionId`, `updatedAt`, `tags`等）
-- [ ] `.env`ファイルに`N8N_API_KEY`が設定されているか確認
+- [ ] 環境変数ファイルの確認（`.env`または`.env.env`に`N8N_API_KEY`が設定されているか）
 - [ ] インポートスクリプトが最新か確認（`scripts/import-workflow-to-n8n.py`）
+
+ワークフローインポート後の確認事項:
+
+- [ ] インポートが成功したか確認（ワークフローIDとURLを確認）
+- [ ] n8n Dashboardでワークフローが存在することを確認
+- [ ] 適切なフォルダに移動されているか確認（Personalまたはhadayalab-automation-platform）
+- [ ] 各ノードの認証情報を設定（人間の役割）
+- [ ] ワークフローを有効化（人間の役割）
+- [ ] Webhook URLが生成されているか確認
+- [ ] テストスクリプトを作成して基本動作を確認（Cursor）
+
+---
+
+## 📝 今回のフローで得られた追加のベストプラクティス（2025-12-26）
+
+### .envファイルの確認方法
+
+**問題**: `.env`ファイルが存在しない場合、インポートスクリプトがエラーになる
+
+**解決策**: インポートスクリプトは`.env`ファイルが見つからない場合、自動的に`.env.env`ファイルも確認します
+
+**実装**:
+```python
+# .envファイルを読み込む（.env.envも確認）
+env_path = Path(__file__).parent.parent / ".env"
+if not env_path.exists():
+    # .env.envも確認
+    env_path = Path(__file__).parent.parent / ".env.env"
+load_env_file(env_path)
+```
+
+### インポート後の検証手順
+
+1. **インポート結果の確認**
+   - ワークフローIDとURLを確認
+   - 例: `ID: bELMAoceJ0vFNMaa`, `URL: https://hadayalab.app.n8n.cloud/workflow/bELMAoceJ0vFNMaa`
+
+2. **n8n Dashboardでの確認**
+   - ワークフローが存在することを確認
+   - フォルダに移動されているか確認（必要な場合）
+
+3. **テストスクリプトの作成**
+   - Webhook URLの基本動作確認
+   - 各アクションのテスト（認証情報設定後）
+
+### フォルダへの移動手順
+
+**Personalフォルダへの移動**:
+1. n8n Dashboardでワークフローを開く
+2. Personalフォルダ（プロジェクトID: `fPT5foO8DCTDBr0k`）にドラッグ&ドロップ
+3. または、ワークフローメニュー（⋮）から「Move」を選択
+
+**hadayalab-automation-platformフォルダへの移動**:
+1. n8n Dashboardでワークフローを開く
+2. hadayalab-automation-platformフォルダ（プロジェクトID: `9D29Es58GIo6IPkZ`）にドラッグ&ドロップ
+3. または、ワークフローメニュー（⋮）から「Move」を選択
 
 ---
 
@@ -229,9 +310,10 @@ if response.status_code in [200, 201]:
 
 - [n8n完全SSOT](./n8n-complete-SSOT.md) - n8n関連のすべてのナレッジ
 - [インポートスクリプト](../../scripts/import-workflow-to-n8n.py) - 実装済みのインポートスクリプト
+- [フォルダ整理ガイド](../setup/n8n-folder-organization-guide.md) - フォルダ管理ガイド
 
 ---
 
 **最終更新**: 2025-12-26
-**バージョン**: 1.0.0（実証済みベストプラクティス）
+**バージョン**: 1.1.0（.env.envファイル対応とインポート後検証手順を追加）
 
